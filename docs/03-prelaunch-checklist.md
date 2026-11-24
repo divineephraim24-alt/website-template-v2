@@ -42,7 +42,7 @@ Nothing goes live until every box is ticked. `/prelaunch-check` covers the autom
 ## 6. On your own phone, using the Cloudflare preview address
 - [ ] Every contact button works: WhatsApp opens with the right message, Call dials, email opens, booking link loads
 - [ ] Every external link opens the right page (Google, social, maps)
-- [ ] Menu, FAQ and extra pages work
+- [ ] Menu, FAQ, policy and extra pages work, and the footer links reach them
 - [ ] Video plays on an iPhone, if the site has one
 - [ ] Read every word once, slowly
 
@@ -57,7 +57,7 @@ Nothing goes live until every box is ticked. `/prelaunch-check` covers the autom
 - [ ] Security headers present, and the pages.dev address is hidden from Google
 - [ ] Sitemap submitted in Google Search Console (client's account, or with their permission)
 - [ ] In Search Console, **URL Inspection** on the home page says it can be indexed (robots.txt is not blocking Google)
-- [ ] http:// and www addresses both redirect to https:// (Cloudflare **Always Use HTTPS** on)
+- [ ] http:// addresses redirect to https:// (Cloudflare **Always Use HTTPS** on)
 - [ ] Link preview looks right when sent in WhatsApp
 - [ ] Uptime monitor added
 - [ ] Domain renewal date recorded, auto-renew on

@@ -11,6 +11,7 @@ A phone-first website for [[business]], including:
 - [[FAQ page / extra pages]]
 - Contact by [[WhatsApp / phone / email / booking link]]
 - Google-ready business details, sitemap, link preview image, security settings
+- Privacy, terms and conditions, and refunds and cancellations pages, written from your answers (please check them: not legal advice)
 - Preparing up to [[20]] photos, with number plates and house numbers blurred
 
 **Not included unless agreed:** writing beyond the site's wording, photography, logo design, online payments or shop, customer accounts, email setup, paid advertising, and any guarantee of Google ranking.

@@ -34,6 +34,7 @@ Each client gets their own folder in `C:\Users\HP\Projects\Clients\<name>` (crea
 
 ## Version history
 - **v1.0:** first complete toolkit.
+- **v2.0:** prices typed as words are refused; privacy, terms and refunds pages; extra launch checks (leaked keys, forms, tracking, robots.txt, broken values).
 
 ## Version 2 list (not built yet: add when needed)
 - Per-client time log template

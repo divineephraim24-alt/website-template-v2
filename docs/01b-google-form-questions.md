@@ -51,7 +51,7 @@ Types: **S** short answer, **P** paragraph, **M** multiple choice, **C** checkbo
 - Anything customers should know before booking, or limits on what you can do (P)
 - How do you handle customers' personal details? (P)
 - Your terms: how bookings are confirmed, how long quotes last, when and how customers pay (P)
-- Your refund policy: what happens if a customer cancels or isn't happy (P)
+- If a customer isn't happy, what do you do, and when do you give money back? (P)
 
 ## Section 6: Why choose you
 - Two to four genuine reasons to choose you (P)

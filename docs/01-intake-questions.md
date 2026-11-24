@@ -31,12 +31,12 @@ Use these on a call, or send the Google Form version (`01b-google-form-questions
 
 ## 5. How it works
 20. How does a customer book, step by step? (`bookingSteps`)
-21. Your cancellation, deposit and late policies? (`bookingSteps.note`, `faq`)
+21. Your cancellation, deposit and late policies? (`bookingSteps.note`, `faq`, `policies.refunds`)
 22. What do customers ask most often, and what do you tell them? (`faq`)
 23. What should customers know before they book? Any limits on what you can do?
 24. How do you handle customers' personal details, and how long do you keep them? (`faq.privacy`, shown as the privacy policy)
 24a. Your terms: how are bookings confirmed, how long is a quote valid, when and how do customers pay? (`policies.terms`)
-24b. Your refund and cancellation policy: notice needed, what happens to deposits, and what you do if a customer isn't happy? (`policies.refunds`)
+24b. If a customer isn't happy, what do you do, and when do you give money back? (`policies.refunds`, together with question 21)
 24c. Is there anything you can't promise or are not responsible for (results, weather, existing damage)? (`policies.terms`)
 
 ## 6. Why choose you

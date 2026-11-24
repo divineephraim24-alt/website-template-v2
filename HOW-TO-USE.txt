@@ -365,6 +365,8 @@ SECTIONS
   Find us              Address, map link, opening hours, walk-ins, parking
   Closing              Final call to action
   FAQ page             Questions, answers and a privacy note
+  Policies             Privacy, terms and conditions, and refunds and
+                       cancellations, linked at the bottom of every page
   Extra pages          A menu, service page, price list or gallery
 
 CONTACT METHODS (any mix, with one as the main button)
@@ -387,6 +389,11 @@ BUILT IN AUTOMATICALLY
   image, iPhone video fix, keyboard and screen-reader support, reduced-motion
   support. No cookies or tracking.
 
+CHECKED AUTOMATICALLY BEFORE LAUNCH
+  No passwords or API keys in the published files, no forms without spam
+  protection, no tracking without a cookie banner, policy pages linked, and
+  robots.txt letting Google in.
+
 
 ===============================================================================
  8. THE CONTENT FILE (content.js)
@@ -399,7 +406,9 @@ Normally Claude edits this for you. If you open it yourself:
   - [[Double brackets]] are placeholders that still need filling in
   - Switch a section off by changing true to false under "sections"
   - If text contains an apostrophe, wrap it in "double quotes"
-  - Prices are plain numbers with no quotes or £ sign, like 45
+  - Prices are plain numbers with no quotes or £ sign, like 45. If there is
+    no fixed price, set price to null and put the words in priceText
+  - Terms and refund wording comes only from the client's own answers
 
 The build won't run while something is wrong. It tells you what to fix and
 usually the line number, and it leaves the existing website untouched.

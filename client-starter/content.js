@@ -279,7 +279,7 @@ module.exports = {
 
   // ---------- Policies: privacy, terms and conditions, refunds ----------
   // Linked at the bottom of every page. Write them ONLY from the client's own answers
-  // (intake questions 24 and 24a to 24c). Never copy another business's policy. Not legal advice:
+  // (intake questions 21, 24 and 24a to 24c). Never copy another business's policy. Not legal advice:
   // the client should check them, e.g. against gov.uk and Citizens Advice guidance.
   policies: {
     // Privacy uses the faq.privacy text above. If the FAQ page is on, its privacy section is

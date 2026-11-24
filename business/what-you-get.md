@@ -11,6 +11,7 @@ A fast, professional website built around your business, designed first for the 
 - **Secure,** with no cookie banners, tracking or adverts
 - **Accessible** to people using screen readers or keyboards
 - **Your privacy protected:** number plates and house numbers blurred, hidden photo data removed
+- **Clear policies:** privacy, terms and refunds pages, written from your own answers and approved by you
 
 ## You stay in control
 - **Your domain is in your name.** You own it and pay for it directly.
