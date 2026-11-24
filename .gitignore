@@ -1,0 +1,22 @@
+# Website toolkit: only the toolkit itself is saved and backed up.
+# Git does not allow notes on the same line as a pattern, so each note sits above its line.
+
+# Built websites (made by tools/build_site.js; each client's site has its own repo)
+site/
+
+# Disposable test files and caches
+.tmp/
+.cache/
+
+# Real client work never lives here (it goes in C:\Users\HP\Projects\Clients\<name>)
+Clients/
+clients/
+
+# Media dropped into the starter by mistake: keep only the empty folder markers
+client-starter/media/**
+!client-starter/media/**/
+!client-starter/media/**/.gitkeep
+
+# Secrets and local settings
+.env
+.claude/settings.local.json

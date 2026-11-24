@@ -1,0 +1,645 @@
+===============================================================================
+ HOW TO USE YOUR WEBSITE TOOLKIT
+ Building websites for small businesses, from first enquiry to handover
+===============================================================================
+
+CONTENTS
+
+  1.  What this is
+  2.  Where everything lives
+  3.  Do these once, before your first client
+  4.  The short version
+  5.  The full process, step by step
+  6.  The two commands
+  7.  What a website can include
+  8.  The content file (content.js)
+  9.  Photos and videos
+ 10.  Changing a client's website later
+ 11.  Undoing a change
+ 12.  Hosting, domains and who owns what
+ 13.  Money, contracts and staying legal
+ 14.  The rules that always apply
+ 15.  When something goes wrong
+ 16.  Commands you can type yourself
+ 17.  What the toolkit does not do yet
+ 18.  Which file do I need?
+
+
+===============================================================================
+ 1. WHAT THIS IS
+===============================================================================
+
+This toolkit lets you build fast, professional, phone-first websites for any
+small business: trades, cleaners, beauty, food, fitness, mobile services and
+shops.
+
+You don't need to write code. You give Claude the client's details, Claude
+builds the site one section at a time, and you approve each step.
+
+How a website gets made:
+
+  Client's information
+     goes into one file (content.js)
+     the build tool checks it and makes the website (the site folder)
+     the check tool tests it
+     it is uploaded to a private GitHub repo
+     Cloudflare publishes it
+     it appears on the client's own web address
+
+There is no demo site in the toolkit. Use a real site you've already built
+when you want to show someone an example.
+
+
+===============================================================================
+ 2. WHERE EVERYTHING LIVES
+===============================================================================
+
+THE TOOLKIT (the master copy, used for every client)
+  C:\Users\HP\Projects\Website-Template
+
+  Backed up privately on GitHub:
+  kocall35/website-template
+
+EACH CLIENT (one folder per client, created for you)
+  C:\Users\HP\Projects\Clients\<client-name>
+
+  The Clients folder doesn't exist yet. It appears when you start your first
+  client.
+
+INSIDE A CLIENT'S FOLDER
+
+  client\content.js   Every fact about the business. The most important file.
+  client\media\       The client's original photos, videos and logo.
+                      These are never edited.
+  site\               The finished website. This is what gets published.
+  QUESTIONS.md        What you still need to ask the client.
+  PLAN.md             The record for this client: progress, sign-off,
+                      accounts and decisions.
+  docs\               A copy of the guides.
+  engine\, tools\     The working parts. You can ignore these.
+  .tmp\               Temporary files, including the preview file.
+
+IMPORTANT: client folders are saved on this computer only. They are NOT in
+OneDrive and are NOT backed up to GitHub, apart from the published site. Keep
+your own backup of client folders, especially the original photos.
+
+
+===============================================================================
+ 3. DO THESE ONCE, BEFORE YOUR FIRST CLIENT
+===============================================================================
+
+[ ] CLOUDFLARE SECURITY (essential)
+    Every client's site will sit in your Cloudflare account.
+      - Give it its own strong password, not only "Continue with GitHub"
+      - Turn on two-factor authentication
+      - Store the recovery codes safely, away from this computer
+
+[ ] GITHUB SECURITY
+    Turn on two-factor authentication and store the recovery codes safely.
+
+[ ] BUSINESS EMAIL
+    Create a separate email for client messages and client-related accounts.
+    Keep it apart from your personal email and any other business.
+
+[ ] GOOGLE FORM
+    Sign in to your business Google account, go to forms.google.com, and build
+    the intake form from docs\01b-google-form-questions.md. Keep the link. You
+    reuse the same form for every client.
+
+[ ] PHOTO GUIDE
+    Put a copy of docs\client-photo-guide.md somewhere you can share by link,
+    such as Google Docs, and add that link to your form.
+
+[ ] BUSINESS BASICS (read business\notes.md)
+      - Check whether you need to tell HMRC about this income
+      - Ask a broker about professional indemnity insurance
+      - Check whether you need to pay the ICO data protection fee
+      - Decide your prices and what they include
+
+[ ] YOUR SALES SHEET AND PROPOSAL
+    Fill in your details and prices in business\what-you-get.md and
+    business\proposal-template.md. Anything in [[double brackets]] needs
+    replacing.
+
+
+===============================================================================
+ 4. THE SHORT VERSION
+===============================================================================
+
+  0. Run the toolkit health check             10 to 15 min
+  1. Collect the client's information         client: 30 to 60 min
+  2. Send a quote and take a deposit          30 min
+  3. Start with /new-client                   5 to 10 min
+  4. Get answers to the missing questions     1 to 3 days, mostly waiting
+  5. Build section by section                 1 to 2 sessions
+  6. Client approves the wording in writing   1 to 3 days, mostly waiting
+  7. Run /prelaunch-check                     about 1 hour
+  8. Go live                                  about 1 hour, plus up to a day
+  9. Hand over and invoice                    30 min
+
+QUICK-START.md has this same routine on one page.
+
+
+===============================================================================
+ 5. THE FULL PROCESS, STEP BY STEP
+===============================================================================
+
+Text between the lines marked PASTE is ready to copy into Claude Code. Replace
+anything in [square brackets].
+
+-------------------------------------------------------------------------------
+STEP 0: TOOLKIT HEALTH CHECK (before each new client)
+-------------------------------------------------------------------------------
+
+Open C:\Users\HP\Projects\Website-Template in VS Code, then open Claude Code.
+
+--- PASTE ---
+Run a toolkit health check. Build temporary test content in .tmp/tests for 3
+made-up businesses (mobile; premises in light mode; both, with video and an
+extra page) using different contact methods, sections and style options. Run
+build_site and check_site on each, and confirm broken content is refused.
+Check docs/04-hosting-domain-ownership.md against Cloudflare's current
+documentation and tell me anything that has changed. Then delete all test
+content, confirm git status is clean, and report the results.
+--- END ---
+
+Carry on only if it reports no problems.
+
+-------------------------------------------------------------------------------
+STEP 1: COLLECT THE CLIENT'S INFORMATION
+-------------------------------------------------------------------------------
+
+Send your Google Form link and the photo guide, or go through
+docs\01-intake-questions.md on a call.
+
+You need:
+  - What they do, and their services and prices
+  - How customers should contact them
+  - Areas covered, or address and opening hours
+  - Booking steps and policies
+  - Photos and logo
+  - Real reviews, with each customer's permission
+  - Sole trader or limited company
+  - Whether they own a domain, and whether they use email on it
+
+Don't worry if some of it is missing. Claude will list the gaps.
+
+-------------------------------------------------------------------------------
+STEP 2: QUOTE AND DEPOSIT
+-------------------------------------------------------------------------------
+
+Fill in business\proposal-template.md and send it. Don't start building until
+they've accepted and paid the deposit.
+
+-------------------------------------------------------------------------------
+STEP 3: START THE CLIENT
+-------------------------------------------------------------------------------
+
+With Claude Code open in the toolkit folder, type:
+
+    /new-client Client Name
+
+Then paste this, filled in:
+
+--- PASTE ---
+Business type: [what they do]
+Service mode: [we go to them / they come to us / both]
+Here is everything I have: [paste notes, form answers, prices, policies]
+Photos, logo and videos are in: [folder path, or "none yet"]
+Fill in content.js from this only. Don't invent anything. List everything
+missing in QUESTIONS.md as plain questions, suggest which sections suit this
+business with one-line reasons, then stop and wait for my OK.
+--- END ---
+
+Claude will create the folder, fill in what it can, write the questions,
+suggest sections, and stop.
+
+-------------------------------------------------------------------------------
+STEP 4: FILL THE GAPS
+-------------------------------------------------------------------------------
+
+Send the questions in QUESTIONS.md to the client. When they reply:
+
+--- PASTE ---
+Here are the client's answers: [paste]. Update content.js and QUESTIONS.md.
+Show me what's still missing.
+--- END ---
+
+Then agree the sections and look:
+
+--- PASTE ---
+Use these sections: [list, or "your suggestions are fine"].
+Style: [dark or light, accent colour, modern/classic/friendly font,
+sharp/soft/round corners].
+--- END ---
+
+Then sort out the photos:
+
+--- PASTE ---
+Copy the photos from [folder] into client/media without changing the
+originals. Show me a contact sheet and suggest which photo goes where. Check
+each one for number plates, house numbers, faces and signs, add blur boxes,
+and show me zoomed crops to confirm.
+--- END ---
+
+-------------------------------------------------------------------------------
+STEP 5: BUILD
+-------------------------------------------------------------------------------
+
+--- PASTE ---
+Build the site one section at a time, in page order. After each, show phone
+and desktop screenshots and wait for my OK.
+--- END ---
+
+Reply "OK, next", or say what you'd like changed.
+
+Until the client approves the wording, every page shows a yellow DRAFT WORDING
+banner and the site is hidden from Google. That's deliberate.
+
+-------------------------------------------------------------------------------
+STEP 6: CLIENT APPROVAL
+-------------------------------------------------------------------------------
+
+Say:
+
+--- PASTE ---
+Make the preview file.
+--- END ---
+
+You get one .html file in the client's .tmp folder. Send it to the client,
+with a message like:
+
+    Here's a preview of your website. Please check every price, time, detail
+    and sentence. Reply with any changes, or "I approve the wording" when
+    you're happy.
+
+If the file is over 16 MB, send it by Google Drive instead of WhatsApp.
+
+When they approve in writing:
+
+--- PASTE ---
+The client approved the wording: [who, how, date]. Record it in PLAN.md and
+content.js, and set wordingDraft to false.
+--- END ---
+
+Keep their approval message. The site can't be built for launch without this.
+
+-------------------------------------------------------------------------------
+STEP 7: PRE-LAUNCH CHECK
+-------------------------------------------------------------------------------
+
+Open the CLIENT'S folder in VS Code, open Claude Code, and type:
+
+    /prelaunch-check
+
+Fix anything it finds. Then work through the by-hand items in
+docs\03-prelaunch-checklist.md, including tapping every contact button on your
+own phone. Test on an iPhone if the site has a video.
+
+-------------------------------------------------------------------------------
+STEP 8: GO LIVE
+-------------------------------------------------------------------------------
+
+--- PASTE ---
+Walk me through going live, one step at a time, using
+docs/04-hosting-domain-ownership.md. Show me each dry run before anything is
+uploaded. Don't touch the domain or DNS until I say so.
+--- END ---
+
+Before the domain is changed, always check:
+  - The domain is in the client's name and paid by them
+  - Their existing MX records (email) are written down
+  - DNSSEC is off
+
+Changing the domain wrongly can stop a client's email, so take this slowly.
+
+-------------------------------------------------------------------------------
+STEP 9: HAND OVER
+-------------------------------------------------------------------------------
+
+--- PASTE ---
+Fill in docs/owner-guide.md for this client and list the accounts and renewal
+dates for the handover.
+--- END ---
+
+Then:
+  - Send the client the owner guide
+  - Confirm what they own
+  - Add an uptime monitor
+  - Set up the care plan, if agreed
+  - Invoice the balance
+
+
+===============================================================================
+ 6. THE TWO COMMANDS
+===============================================================================
+
+/new-client Client Name
+  Use in the TOOLKIT folder. Creates the client's folder, fills in content
+  from your notes, lists questions, suggests sections, then waits. It refuses
+  to touch a folder that already exists.
+
+/prelaunch-check
+  Use in the CLIENT'S folder. Checks sign-off, runs all the tests, compares
+  facts with your notes, inspects photos and reports problems by priority. It
+  doesn't change or publish anything.
+
+
+===============================================================================
+ 7. WHAT A WEBSITE CAN INCLUDE
+===============================================================================
+
+Everything except the top section (the "hero") is optional.
+
+SECTIONS
+  Hero                 Main headline, button and photo
+  Reassurance          Two to four short reasons to trust the business
+  Services             Cards with prices, "from" prices or "free quote"
+  Price table          Prices by size or option
+  Add-ons              Optional extras
+  Plan                 Regular visits, memberships or subscriptions
+  Our work             Video, before and after photos, gallery
+  How booking works    Simple steps and policies
+  Reviews              Real reviews, with consent
+  Where we work        Areas covered and what the customer provides
+  Find us              Address, map link, opening hours, walk-ins, parking
+  Closing              Final call to action
+  FAQ page             Questions, answers and a privacy note
+  Extra pages          A menu, service page, price list or gallery
+
+CONTACT METHODS (any mix, with one as the main button)
+  WhatsApp, phone, email, online booking link
+
+TYPE OF BUSINESS
+  mobile     We come to you
+  premises   Visit us
+  both       Either
+
+STYLE
+  Mode       dark or light
+  Accent     Any colour. If it's hard to read, the build suggests a fix.
+  Font       modern, classic or friendly
+  Corners    sharp, soft or round
+  Logo       Optional. Favicons and the link preview image are made for you.
+
+BUILT IN AUTOMATICALLY
+  Security settings, Google business details, sitemap, 404 page, link preview
+  image, iPhone video fix, keyboard and screen-reader support, reduced-motion
+  support. No cookies or tracking.
+
+
+===============================================================================
+ 8. THE CONTENT FILE (content.js)
+===============================================================================
+
+Normally Claude edits this for you. If you open it yourself:
+
+  - Only change text inside quote marks, or true/false switches
+  - Keep the comma at the end of each line
+  - [[Double brackets]] are placeholders that still need filling in
+  - Switch a section off by changing true to false under "sections"
+  - If text contains an apostrophe, wrap it in "double quotes"
+  - Prices are plain numbers with no quotes or £ sign, like 45
+
+The build won't run while something is wrong. It tells you what to fix and
+usually the line number, and it leaves the existing website untouched.
+
+
+===============================================================================
+ 9. PHOTOS AND VIDEOS
+===============================================================================
+
+PHOTOS
+  - Originals in client\media are never changed
+  - The tools make web copies, turn them upright, remove hidden data such as
+    GPS location, and make phone and desktop sizes
+  - Blur boxes cover number plates and house numbers. Claude adds them, and
+    you should always check zoomed-in crops yourself
+  - Only use photos the client owns or has permission to use
+
+VIDEOS
+  - The toolkit doesn't edit or compress video yet
+  - Use a short .mp4 that's already compressed
+  - Aim for under 15 MB. The build refuses anything over 25 MB
+  - Check the video yourself for plates, house numbers and faces. The photo
+    blur tool does NOT work on video
+
+
+===============================================================================
+ 10. CHANGING A CLIENT'S WEBSITE LATER
+===============================================================================
+
+Open the CLIENT'S folder in VS Code, open Claude Code, and say:
+
+--- PASTE ---
+Read PLAN.md. [Describe the change.] Update content.js, rebuild, check it, and
+show me before publishing.
+--- END ---
+
+Examples:
+  - The full clean is now £60.
+  - We're closed 24 to 27 December.
+  - Add this review from Sam in [town]. They've agreed to be named.
+  - Replace the main photo with the new one in client/media/photos.
+
+When you're happy, say "publish". Claude should build with --live, run the
+check, do a dry run, then commit and push from the site folder. Cloudflare
+updates the site about a minute later.
+
+
+===============================================================================
+ 11. UNDOING A CHANGE
+===============================================================================
+
+IF THE LIVE SITE LOOKS WRONG RIGHT NOW
+  Cloudflare > Workers & Pages > the client's project > Deployments.
+  Find the last good version, open its "..." menu, and choose Rollback.
+  It switches back within seconds.
+
+  Then tell Claude what you rolled back, so the files can be corrected.
+  Otherwise the next publish brings the mistake back.
+
+TO UNDO IT PROPERLY
+  Say: "Undo the last change to the website." Claude should keep the history
+  and never force-push.
+
+
+===============================================================================
+ 12. HOSTING, DOMAINS AND WHO OWNS WHAT
+===============================================================================
+
+STANDARD SETUP
+  Domain                     Client owns it and pays for it
+  Google Business Profile    Client owns it
+  Website files              Client's once paid in full
+  Hosting                    Your Cloudflare account, free tier
+  Code                       Your private GitHub
+
+YOUR FOUR PROTECTION RULES
+  1. The domain is always in the client's name and paid by them.
+  2. Exit plan: on request, they get a zip of the site and a DNS export, free,
+     within 14 days.
+  3. Never add or change email records you haven't agreed to manage.
+  4. A client who insists can have the site in their own Cloudflare account.
+
+IF THE CLIENT HAS NO DOMAIN
+  The recommendation is a .co.uk, bought by the client on their own account.
+  Namecheap is suggested, but any reputable registrar is fine. Use their email
+  and card, turn on auto-renew, and skip the upsells. Check the renewal price.
+
+IF YOU'RE UNAVAILABLE
+  The site keeps running without you. Your response times, holiday cover and
+  what happens if you stop are in the proposal and in docs\04. Fill in your
+  own terms before sending a proposal.
+
+Full instructions: docs\04-hosting-domain-ownership.md
+
+
+===============================================================================
+ 13. MONEY, CONTRACTS AND STAYING LEGAL
+===============================================================================
+
+This is not legal or tax advice. Check gov.uk, HMRC and the ICO, and speak to
+an accountant or solicitor if you're unsure.
+
+  - Take a deposit before starting
+  - Keep every approval in writing
+  - Limit revision rounds (two is a sensible start)
+  - Don't publish until the balance is paid, unless you've agreed otherwise
+  - Never promise Google rankings or sales
+  - Never ask for a client's passwords
+  - Track your hours on the first few jobs, then adjust your prices
+  - Have the proposal checked before relying on it as a contract
+
+Pricing ideas and a contract checklist are in business\notes.md.
+
+
+===============================================================================
+ 14. THE RULES THAT ALWAYS APPLY
+===============================================================================
+
+  - Never invent facts: prices, hours, reviews, qualifications or claims
+  - Reviews are real, word for word, and shown with permission
+  - The client approves all wording in writing before launch
+  - Never edit the client's original files
+  - Blur number plates and house numbers
+  - Check before publishing
+  - Do a dry run before every git save or upload
+  - Only the site folder goes to the client's GitHub repo
+  - Never put passwords or recovery codes in a project file
+  - Never put one client's details in another client's site
+
+
+===============================================================================
+ 15. WHEN SOMETHING GOES WRONG
+===============================================================================
+
+"The build stopped"
+  Read the numbered list. Nothing has been changed. Paste it to Claude and
+  say "fix these", or fill in what's missing.
+
+"placeholder(s) still need filling in"
+  Fill them in, or switch that section off.
+
+"This is a live build but the wording is still marked as draft"
+  Get the client's written approval and record it (Step 6).
+
+"The accent colour is too hard to read"
+  Use the suggested colour in the message.
+
+"Reviews are on but consentConfirmed is not true"
+  Get each customer's permission first, then tell Claude.
+
+"FFmpeg was not found"
+  Run: winget install Gyan.FFmpeg
+
+"No built site found"
+  Build it first: node tools/build_site.js .
+
+The check reports problems
+  Paste the result to Claude and ask it to explain and propose a fix.
+
+Can't find a Cloudflare setting
+  Its menus move. Press Ctrl+K in the dashboard and search for the name.
+
+The domain still shows the old site
+  This can take a few hours after a nameserver change. Try mobile data.
+
+Client's email stopped working
+  Stop and compare the DNS records with the list you wrote down before
+  changing anything. Restore any missing MX or TXT records.
+
+You've forgotten where you got to
+  Open the client's folder and say: "Read PLAN.md and QUESTIONS.md and tell me
+  where this project is and what to do next."
+
+
+===============================================================================
+ 16. COMMANDS YOU CAN TYPE YOURSELF
+===============================================================================
+
+You rarely need these because Claude runs them. Run them inside the client's
+folder. The full stop at the end means "this folder".
+
+  Build a preview:             node tools/build_site.js .
+  Build for launch:            node tools/build_site.js . --live
+  Check a preview:             node tools/check_site.js .
+  Check a live build:          node tools/check_site.js . --live
+  Make the preview file:       node tools/make_preview_file.js .
+
+Run this one inside the toolkit folder:
+
+  Create a client folder:      node tools/new_client.js "Client Name"
+
+
+===============================================================================
+ 17. WHAT THE TOOLKIT DOES NOT DO YET
+===============================================================================
+
+STILL TO PROVE ON A REAL JOB
+  The toolkit passed its tests with made-up businesses and generated images.
+  On your first client, allow extra time and check these carefully:
+    - Publishing through Cloudflare
+    - Video on a real iPhone
+    - Real photos and blur placement
+    - The full /new-client conversation
+
+NOT BUILT (the Version 2 list in README.md)
+  - Time log for each client
+  - More themes and a theme preview
+  - Video editing and compression tool
+  - Extra commands (/review-section, /publish, /update-content)
+  - Full handover pack
+  - Testing on your phone over home Wi-Fi
+  - An automated self-test
+
+The toolkit also doesn't do online shops, payments, customer logins, contact
+forms, blogs or email setup.
+
+IMPROVING THE TOOLKIT
+  Each client gets their own copy of the tools. If you fix something during a
+  job and want it for future clients, ask Claude to make the same fix in the
+  main toolkit folder and back it up to GitHub. Existing client sites don't
+  update on their own.
+
+
+===============================================================================
+ 18. WHICH FILE DO I NEED?
+===============================================================================
+
+  Someone wants a website          QUICK-START.md
+  This full guide                  HOW-TO-USE.txt
+  Questions to ask a client        docs\01-intake-questions.md
+  Setting up the Google Form       docs\01b-google-form-questions.md
+  Photo advice for a client        docs\client-photo-guide.md
+  Exact prompts for every stage    docs\02-build-workflow.md
+  Checks before launch             docs\03-prelaunch-checklist.md
+  Hosting and domains              docs\04-hosting-domain-ownership.md
+  Guide to give the client         docs\owner-guide.md
+  One-page sales sheet             business\what-you-get.md
+  Quote and terms                  business\proposal-template.md
+  Pricing, tax and insurance       business\notes.md
+  What's in the toolkit            README.md
+  Rules Claude follows             CLAUDE.md
+
+===============================================================================
