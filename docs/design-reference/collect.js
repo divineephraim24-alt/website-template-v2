@@ -29,7 +29,8 @@ const blockedWords = ['porn', 'xxx', 'sex', 'xvideo', 'xhamster', 'hentai', 'nud
   'tube8', 'redtube', 'youporn', 'spankbang', 'eporner', 'rule34', 'e621', 'casino', 'poker', 'gambl', 'bet365',
   'betway', 'betfair', 'williamhill', 'paddypower', 'skybet', 'stake.', 'roobet', '1xbet', 'bet9ja', 'sportybet',
   'betika', 'lottery', 'slots', 'jackpot'];
-const isBlockedName = domain => blockedWords.some(w => domain.includes(w)) || /(^|\.)bet[a-z0-9-]*\./.test(domain);
+const isBlockedName = domain => blockedWords.some(w => domain.includes(w)) || /(^|\.)bet[a-z0-9-]*\./.test(domain)
+  || /bet\.[a-z.]+$/.test(domain) || /\.cam$/.test(domain) || (/tube\./.test(domain) && !/^(www\.)?(you|ru)tube\./.test(domain));
 
 // "google" for google.com, google.co.uk and google.de, so country copies count once.
 const brandOf = domain => {

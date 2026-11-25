@@ -14,8 +14,11 @@ if (!workDir) { console.error('Usage: node summarise.js <work-folder> [how-many]
 const wanted = Number(wantedArg || 1000);
 const here = __dirname;
 
+// Sites removed by hand (see excluded.txt): never counted or listed.
+const excluded = new Set(fs.readFileSync(path.join(here, 'excluded.txt'), 'utf8').split('\n')
+  .filter(l => l.trim() && !l.startsWith('#')).map(l => l.trim().split(/\s+/)[0]));
 const sites = fs.readFileSync(path.join(workDir, 'sites.jsonl'), 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l))
-  .filter(r => r.phone && r.desktop).sort((a, b) => a.rank - b.rank).slice(0, wanted);
+  .filter(r => r.phone && r.desktop && !excluded.has(r.domain)).sort((a, b) => a.rank - b.rank).slice(0, wanted);
 const total = sites.length;
 
 // ---------- small helpers ----------

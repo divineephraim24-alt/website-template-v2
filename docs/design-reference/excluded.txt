@@ -1,0 +1,8 @@
+# Sites removed from the design reference by hand after checking the list.
+# One domain per line, then a reason. summarise.js skips these.
+arabx.cam                        likely adult
+mat6tube.com                     likely adult
+taktube.net                      likely adult video
+xn--18-3qi3cza3b2a2dxc4b9a.com   likely adult ("18" site)
+triunfobet.com                   betting
+comix.to                         likely unlicensed comics
