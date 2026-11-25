@@ -7,7 +7,7 @@ Open VS Code in `C:\Users\HP\Projects\Website-Template`, open Claude Code, and f
 **0. Toolkit health check (10 to 15 min).** Paste:
 > Run a toolkit health check. Build temporary test content in .tmp/tests for 3 made-up businesses (mobile; premises in light mode; both, with video and an extra page) using different contact methods, sections and style options. Run build_site and check_site on each, and confirm broken content is refused. Check docs/04-hosting-domain-ownership.md against Cloudflare's current documentation and tell me anything that has changed. Then delete all test content, confirm git status is clean, and report the results.
 
-**1. Collect (client: 30 to 60 min).** Send your Google Form link (set it up once from `docs/01b`) or go through `docs/01` on a call. Send `docs/client-photo-guide.md`. You need: what they do, services and prices, how customers contact them, areas or address and hours, photos, logo, reviews **with consent**, sole trader or limited, domain and email situation.
+**1. Collect (client: 30 to 60 min).** Send your Google Form link (set it up once from `docs/01b`) or the Word form (`docs/01c`), or go through `docs/01` on a call. Send `docs/client-photo-guide.md`. You need: what they do, services and prices, how customers contact them, areas or address and hours, photos, logo, reviews **with consent**, sole trader or limited, domain and email situation.
 
 **2. Quote (30 min).** Fill in `business/proposal-template.md`. Get acceptance and a **deposit** before building.
 
