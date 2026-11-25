@@ -155,10 +155,13 @@ function validate(c, clientDir, live) {
 
   // Brand
   const br = c.brand;
-  if (!['dark', 'light'].includes(br.mode)) e.push(`brand.mode must be 'dark' or 'light' (it says "${br.mode}").`);
+  if (br.palette) {
+    if (!theme.LIBRARY[br.palette]) e.push(`brand.palette "${br.palette}" isn't a palette. Choose one of: ${Object.keys(theme.LIBRARY).join(', ')} (see docs/colour-palettes/README.md).`);
+  } else if (!['dark', 'light'].includes(br.mode)) e.push(`brand.mode must be 'dark' or 'light' (it says "${br.mode}").`);
   if (!theme.FONTS[br.font]) e.push(`brand.font must be one of: ${Object.keys(theme.FONTS).join(', ')}.`);
   if (!theme.CORNERS[br.corners]) e.push(`brand.corners must be one of: ${Object.keys(theme.CORNERS).join(', ')}.`);
-  if (!/^#[0-9a-fA-F]{6}$/.test(String(br.accent || ''))) e.push(`brand.accent "${br.accent}" isn't a colour code. Use six digits like #2F6FDE.`);
+  if (br.palette) { /* the palette sets the accent and checks readability itself */ }
+  else if (!/^#[0-9a-fA-F]{6}$/.test(String(br.accent || ''))) e.push(`brand.accent "${br.accent}" isn't a colour code. Use six digits like #2F6FDE.`);
   else if (theme.PALETTES[br.mode]) {
     const p = theme.accentProblem(br.accent, br.mode);
     if (p) e.push(`The accent colour ${br.accent} is too hard to read on a ${br.mode} background (contrast ${p.ratio.toFixed(1)}, needs 4.5). The nearest readable shade is ${p.suggestion}.`);
@@ -326,7 +329,7 @@ function brandFiles(c, clientDir, images, outDir, ffmpeg) {
   }
 
   // Link preview image, 1200 x 630
-  const p = theme.PALETTES[c.brand.mode], work = fs.mkdtempSync(path.join(os.tmpdir(), 'site-og-'));
+  const chosen = theme.paletteFor(c.brand), p = chosen.vars, work = fs.mkdtempSync(path.join(os.tmpdir(), 'site-og-'));
   try {
     const name = c.business.name, tag = c.business.tagline || '';
     fs.writeFileSync(path.join(work, 'name.txt'), name);
@@ -347,7 +350,7 @@ function brandFiles(c, clientDir, images, outDir, ffmpeg) {
       cur = 'b'; idx++;
     }
     const bold = "fontfile='C\\:/Windows/Fonts/segoeuib.ttf'", reg = "fontfile='C\\:/Windows/Fonts/segoeui.ttf'";
-    graph += `[${cur}]drawbox=x=60:y=268:w=90:h=5:color=${c.brand.accent}:t=fill,drawtext=${bold}:textfile=name.txt:fontcolor=${p.ink}:fontsize=${fit(name, 60)}:x=60:y=295`;
+    graph += `[${cur}]drawbox=x=60:y=268:w=90:h=5:color=${chosen.button}:t=fill,drawtext=${bold}:textfile=name.txt:fontcolor=${p.ink}:fontsize=${fit(name, 60)}:x=60:y=295`;
     if (tag) graph += `,drawtext=${reg}:textfile=tag.txt:fontcolor=${p.muted}:fontsize=${fit(tag, 30)}:x=60:y=385`;
     graph += '[out]';
     runFfmpeg(ffmpeg, [...args, '-filter_complex', graph, '-map', '[out]', '-map_metadata', '-1', '-frames:v', '1', '-update', '1', '-q:v', '3', path.join(imgDir, 'og-image.jpg')], work);
@@ -427,7 +430,7 @@ function build(clientDir, live) {
   fs.writeFileSync(path.join(temp, 'styles.css'), theme.themeCss(c.brand, c.contact.main === 'whatsapp') + '\n' + fs.readFileSync(path.join(ENGINE, 'assets', 'styles.css'), 'utf8'));
   fs.copyFileSync(path.join(ENGINE, 'assets', 'script.js'), path.join(temp, 'script.js'));
 
-  const base = { logo, themeColor: theme.PALETTES[c.brand.mode]['head-bg'], videoName, videoPoster };
+  const base = { logo, themeColor: theme.paletteFor(c.brand).vars['head-bg'], videoName, videoPoster };
   const ctx = (file2, extra = {}) => createContext(c, images, { ...base, file: file2, ...extra });
   const write = (name, html) => fs.writeFileSync(path.join(temp, name), html);
   const urls = ['/'];

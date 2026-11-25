@@ -1,5 +1,7 @@
 // engine/themes/dark-premium.js: the look of the site, driven by content.js "brand".
-// Dark and light are separate, hand-picked palettes (light is not just dark inverted).
+// With brand.palette set, the whole site is coloured from that palette (see palettes.js).
+// Without it, the older plain dark or light palette is used with one accent colour.
+const palettes = require('./palettes');
 
 const PALETTES = {
   dark: {
@@ -54,13 +56,21 @@ function accentProblem(accent, mode) {
   return worst >= 4.5 ? null : { ratio: worst, suggestion: fixAccent(accent, mode) };
 }
 
-function themeCss(brand, usesWhatsAppButton) {
+// The colours a site uses: its named palette, or the older plain palette plus accent.
+function paletteFor(brand) {
+  const named = brand.palette && palettes.buildPalette(brand.palette);
+  if (named) return { mode: named.mode, vars: named.vars, accent: named.accentText, button: named.accentButton };
   const mode = brand.mode === 'light' ? 'light' : 'dark';
-  const p = PALETTES[mode], f = FONTS[brand.font] || FONTS.modern, r = CORNERS[brand.corners] || CORNERS.soft;
-  const accent = brand.accent;
-  // Main button: WhatsApp keeps an accessible green; other methods use the accent colour
-  const btnBg = usesWhatsAppButton ? '#0B7A55' : accent;
-  const btnInk = contrast('#FFFFFF', btnBg) >= 4.5 ? '#FFFFFF' : '#050507';
+  return { mode, vars: PALETTES[mode], accent: brand.accent, button: brand.accent };
+}
+
+function themeCss(brand, usesWhatsAppButton) {
+  const chosen = paletteFor(brand), mode = chosen.mode;
+  const p = chosen.vars, f = FONTS[brand.font] || FONTS.modern, r = CORNERS[brand.corners] || CORNERS.soft;
+  const accent = chosen.accent;
+  // Main button: WhatsApp keeps an accessible green; other methods use the palette's accent
+  const button = usesWhatsAppButton ? { bg: '#0B7A55', ink: '#FFFFFF' } : palettes.buttonColours(chosen.button);
+  const btnBg = button.bg, btnInk = button.ink;
   const footAccent = contrast(accent, p['foot-bg']) >= 4.5 ? accent : p['foot-muted'];
   const stripAccent = contrast(accent, p['strip-bg']) >= 3 ? accent : p['strip-ink'];
   const vars = { ...p, accent, 'btn-bg': btnBg, 'btn-hover': darken(btnBg, .14), 'btn-ink': btnInk, 'foot-accent': footAccent, 'strip-accent': stripAccent,
@@ -71,4 +81,4 @@ function themeCss(brand, usesWhatsAppButton) {
   return `/* Generated from content.js "brand". Change colours and style there, not here. */\n${face}:root {\n  color-scheme: ${mode};\n${lines}\n}\n`;
 }
 
-module.exports = { PALETTES, FONTS, CORNERS, contrast, accentProblem, themeCss };
+module.exports = { PALETTES, FONTS, CORNERS, contrast, accentProblem, themeCss, paletteFor, LIBRARY: palettes.LIBRARY };

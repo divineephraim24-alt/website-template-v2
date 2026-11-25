@@ -28,6 +28,7 @@ The person you work with is a beginner at coding. Explain things in plain Englis
 - **git:** before any save or push, do a dry run (`git add --dry-run -A`) and look at the file list. Only `site/` goes to the client's private GitHub repo, never `client/media/`, notes or tools.
 - **Security:** never store passwords, API keys or recovery codes in any file. The hosting Cloudflare account must have its own password, 2FA and stored recovery codes before any client site is hosted (see `docs/04-hosting-domain-ownership.md`).
 - **Not legal, tax or financial advice:** business, contract and company-details notes point to official guidance; say so when relevant.
+- **Colours:** every new site uses a named palette from `docs/colour-palettes/README.md` (set `brand.palette`), never the plain default dark or light look. Pick by mood, don't give two clients in the same area the same palette, and record the choice in the client's `PLAN.md`. The reference boards there are never put on a client site.
 - **Code style:** when writing or changing code in `tools/`, `engine/` or a client's extra pages, follow `docs/05-code-style.md` (the parts of Google's Web Components Style Guide that apply to this toolkit; the full guide is in `docs/style-guide/`).
 
 ## Where things are

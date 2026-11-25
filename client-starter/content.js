@@ -67,6 +67,8 @@ module.exports = {
 
   // ---------- The look ----------
   brand: {
+    palette: '',                         // REQUIRED for new sites: a palette name from docs/colour-palettes/README.md, e.g. 'velvet-forest'.
+                                         // It colours the whole site. mode and accent below are only used when palette is ''.
     mode: 'dark',                        // 'dark' or 'light'
     accent: '#4F9DF7',                  // main colour for links and highlights. The build checks it is readable.
     font: 'modern',                      // 'modern', 'classic' or 'friendly'
