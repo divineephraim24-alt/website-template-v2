@@ -16,7 +16,7 @@ Each client gets their own folder in `C:\Users\HP\Projects\Clients\<name>` (crea
 | `engine/` | The generic website: sections, pages, styles, script, theme. **Never edited per client** |
 | `client-starter/` | The blank `content.js` (every field with a `[[placeholder]]` and a note) and empty media folders |
 | `tools/` | `new_client.js`, `build_site.js`, `prepare_images.js`, `check_site.js`, `screenshot.js`, `make_preview_file.js` |
-| `docs/` | Intake questions (plus a Google Form version and a Word form to send clients), client photo guide, build workflow with prompts, pre-launch checklist, hosting/domain/ownership guide, owner guide |
+| `docs/` | Intake questions (plus a Google Form version and a Word form to send clients), client photo guide, build workflow with prompts, pre-launch checklist, hosting/domain/ownership guide, owner guide, code style guide |
 | `business/` | What-you-get sheet, proposal template, business notes (not legal or tax advice) |
 
 ## What a site can include (every part is optional)
