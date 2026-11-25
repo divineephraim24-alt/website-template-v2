@@ -158,6 +158,8 @@ function validate(c, clientDir, live) {
   if (br.palette) {
     if (!theme.LIBRARY[br.palette]) e.push(`brand.palette "${br.palette}" isn't a palette. Choose one of: ${Object.keys(theme.LIBRARY).join(', ')} (see docs/colour-palettes/README.md).`);
   } else if (!['dark', 'light'].includes(br.mode)) e.push(`brand.mode must be 'dark' or 'light' (it says "${br.mode}").`);
+  const layouts = ['split', 'overlay', 'centered', 'mirror', 'editorial'];
+  if (br.layout && !layouts.includes(br.layout)) e.push(`brand.layout must be one of: ${layouts.join(', ')} (see docs/06-layouts.md). It says "${br.layout}".`);
   if (!theme.FONTS[br.font]) e.push(`brand.font must be one of: ${Object.keys(theme.FONTS).join(', ')}.`);
   if (!theme.CORNERS[br.corners]) e.push(`brand.corners must be one of: ${Object.keys(theme.CORNERS).join(', ')}.`);
   if (br.palette) { /* the palette sets the accent and checks readability itself */ }
