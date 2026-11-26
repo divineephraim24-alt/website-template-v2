@@ -17,7 +17,7 @@ const notFoundPage = require(path.join(ENGINE, 'pages', 'notfound'));
 const policy = require(path.join(ENGINE, 'pages', 'policy'));
 const { prepareImages, findFfmpeg, runFfmpeg, pngSize } = require('./prepare_images');
 
-const SECTION_KEYS = ['hero', 'reassurance', 'services', 'priceTable', 'addons', 'plan', 'work', 'bookingSteps', 'reviews', 'coverage', 'location', 'closing', 'faq'];
+const SECTION_KEYS = ['hero', 'reassurance', 'photoStrip', 'services', 'priceTable', 'addons', 'plan', 'work', 'bookingSteps', 'reviews', 'coverage', 'location', 'closing', 'faq'];
 const SECTION_ANCHORS = { services: 'services', prices: 'priceTable', addons: 'addons', plan: 'plan', work: 'work', booking: 'bookingSteps', reviews: 'reviews', areas: 'coverage', 'find-us': 'location' };
 
 class Stop extends Error {}
@@ -73,6 +73,7 @@ function usedPhotos(c) {
   const s = c.sections, keys = new Set(), add = (k) => { if (k) keys.add(k); };
   [['hero', 'hero'], ['plan', 'plan'], ['bookingSteps', 'bookingSteps'], ['coverage', 'coverage'], ['location', 'location'], ['closing', 'closing'], ['faq', 'faq']]
     .forEach(([sw, k]) => { if (s[sw] && c[k]) add(c[k].photo); });
+  if (s.photoStrip && c.photoStrip) (c.photoStrip.photos || []).forEach(add);
   if (s.work) {
     const w = c.work;
     if (w.video && w.video.file) add(w.video.poster);
@@ -159,7 +160,7 @@ function validate(c, clientDir, live) {
   if (br.palette) {
     if (!theme.LIBRARY[br.palette]) e.push(`brand.palette "${br.palette}" isn't a palette. Choose one of: ${Object.keys(theme.LIBRARY).join(', ')} (see docs/colour-palettes/README.md).`);
   } else if (!['dark', 'light'].includes(br.mode)) e.push(`brand.mode must be 'dark' or 'light' (it says "${br.mode}").`);
-  const layouts = ['split', 'overlay', 'centered', 'mirror', 'editorial'];
+  const layouts = ['split', 'overlay', 'centered', 'mirror', 'editorial', 'arch'];
   if (br.layout && !layouts.includes(br.layout)) e.push(`brand.layout must be one of: ${layouts.join(', ')} (see docs/06-layouts.md). It says "${br.layout}".`);
   if (br.moodFont !== undefined && ![1, 2, false].includes(br.moodFont)) e.push(`brand.moodFont must be 1, 2 or false (it says "${br.moodFont}"). See docs/colour-palettes/README.md.`);
   order.orderProblems(br.order).forEach(m => e.push(m));
@@ -243,6 +244,10 @@ function validate(c, clientDir, live) {
     (c.addons.items || []).forEach(a => { if (a.price != null && a.price !== '') checkPrice(a.price, `Add-on "${a.name}"`); else if (blank(a.priceText)) e.push(`Add-on "${a.name}" needs a price or priceText.`); });
   }
   if (need('plan') && c.plan.table && (c.plan.table.rows || []).length) checkTable(c.plan.table, 'Plan table');
+  if (need('photoStrip')) {
+    const n = (c.photoStrip.photos || []).length;
+    if (n < 3 || n > 6) e.push(`The photo strip needs 3 to 6 photos (it has ${n}).`);
+  }
   if (need('work')) {
     const w2 = c.work, v = w2.video && w2.video.file ? w2.video : null;
     if (!v && !(w2.beforeAfter || []).length && !(w2.gallery || []).length) e.push('The "work" section is on but has no video or photos.');

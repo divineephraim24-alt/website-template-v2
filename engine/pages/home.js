@@ -4,7 +4,7 @@ const { mapUrl } = require('../sections/location');
 const { pageOrder } = require('../order');
 // Each section's renderer. The order on the page comes from engine/order.js (brand.order).
 const RENDER = Object.fromEntries([
-  ['hero', require('../sections/hero')], ['reassurance', require('../sections/reassurance')],
+  ['hero', require('../sections/hero')], ['reassurance', require('../sections/reassurance')], ['photoStrip', require('../sections/photo-strip')],
   ['services', require('../sections/services')], ['priceTable', require('../sections/price-table')],
   ['addons', require('../sections/addons')], ['plan', require('../sections/plan')],
   ['work', require('../sections/work')], ['bookingSteps', require('../sections/booking-steps')],

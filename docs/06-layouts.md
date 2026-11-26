@@ -17,6 +17,7 @@ and wording stay the same. All five work on phones and pass the same checks.
 | `centered` | Heading centred at the top, wide framed photo below | Centred headings and cards | Calm, premium, friendly (beauty, wellness, cafes) |
 | `mirror` | Text first, photo on the left on desktop | Accent line under headings, open cards with a coloured top edge | Modern, clean (trades, cleaners, fitness) |
 | `editorial` | Very large heading, edge-to-edge photo below | Ruled headings, services as rows, square gallery | Bold, confident brands (barbers, studios, shops) |
+| `arch` | Large heading beside a photo in an arch-shaped frame (heading first on phones) | Centred headings, arch-topped cards, arch-shaped gallery and strip photos | Elegant, soft (beauty, florists, bridal, wellness), lovely with a luxury palette |
 
 ## Section order
 The middle of the page can be in any order too. Set `brand.order` to the sections you want
@@ -26,7 +27,8 @@ first, in order:
 brand: { order: ['work', 'services', 'location', 'bookingSteps'], ... }
 ```
 
-- Can move: `services`, `plan`, `work`, `bookingSteps`, `reviews`, `coverage`, `location`.
+- Can move: `photoStrip`, `services`, `plan`, `work`, `bookingSteps`, `reviews`, `coverage`, `location`.
+- The photo strip (`sections.photoStrip`, a row of 3 to 6 square photos) sits straight under the top section unless you list it somewhere in `brand.order`.
 - Always first: the top section and its reassurance strip. Always last: the closing call to action.
 - The price table and add-ons always stay straight after services.
 - Anything not listed keeps its usual place after the listed ones. Switched-off sections are skipped.

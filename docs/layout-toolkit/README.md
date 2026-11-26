@@ -22,12 +22,12 @@ or exact look. These images never go on a client site.
 | `08-asymmetric-photo-grid` | Big welcome on the left, photo on the right, then an uneven photo grid with one coloured review panel | `mirror` or `split` layout, with `work` before `services`. The coloured review panel suits a client with real reviews |
 
 ## Ideas for future layouts
-These boards suggest layouts the engine doesn't have yet. Each would be a proposed change to
-`engine/` first, as usual:
+These boards suggest layouts. Two are built; the others would be a proposed change to `engine/`
+first, as usual:
 
-- **Arch:** photos in arch-shaped frames, for luxury and beauty clients (board 04).
+- **Arch:** built. Use `brand.layout: 'arch'` (board 04).
 - **Cards over the photo:** the reassurance strip as cards overlapping the bottom of the top photo (board 07).
-- **Photo strip:** a row of square photos straight under the top section (board 06).
+- **Photo strip:** built. Switch on `sections.photoStrip` and list 3 to 6 photos (board 06).
 - **Review panel:** one real review in a coloured block inside the gallery (board 08).
 
 ## Rules that still apply

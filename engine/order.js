@@ -4,11 +4,12 @@
 // The top section and its reassurance strip always come first, and the closing call to action
 // always comes last. Everything in between can move. The price table and add-ons always stay
 // straight after services, because they explain the services. Names not listed keep their
-// usual place after the listed ones, and sections that are switched off are simply skipped.
+// usual place after the listed ones (the photo strip: straight under the top section), and
+// sections that are switched off are simply skipped.
 
 const FIRST = ['hero', 'reassurance'];
 const LAST = ['closing'];
-const MOVABLE = ['services', 'plan', 'work', 'bookingSteps', 'reviews', 'coverage', 'location'];
+const MOVABLE = ['photoStrip', 'services', 'plan', 'work', 'bookingSteps', 'reviews', 'coverage', 'location'];
 const STAYS_WITH = { services: ['services', 'priceTable', 'addons'] };
 
 // Problems with a brand.order list, as plain sentences (empty when it's fine).
@@ -24,7 +25,8 @@ function orderProblems(order) {
 // Every home page section name, in the order the page shows them.
 function pageOrder(c) {
   const wanted = ((c.brand && c.brand.order) || []).filter(k => MOVABLE.includes(k));
-  const middle = [...new Set([...wanted, ...MOVABLE])];
+  // The photo strip sits straight under the top section unless brand.order places it somewhere.
+  const middle = [...new Set([...(wanted.includes('photoStrip') ? [] : ['photoStrip']), ...wanted, ...MOVABLE])];
   return [...FIRST, ...middle.flatMap(k => STAYS_WITH[k] || [k]), ...LAST];
 }
 

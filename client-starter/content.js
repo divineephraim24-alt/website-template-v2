@@ -70,7 +70,7 @@ module.exports = {
     palette: '',                         // REQUIRED for new sites: a palette name from docs/colour-palettes/README.md, e.g. 'velvet-forest'.
                                          // It colours the whole site. mode and accent below are only used when palette is ''.
     moodFont: 1,                         // heading font: 1 or 2 (the two choices for the palette's mood), or false for none
-    layout: '',                          // REQUIRED for new sites: split, overlay, centered, mirror or editorial (docs/06-layouts.md).
+    layout: '',                          // REQUIRED for new sites: split, overlay, centered, mirror, editorial or arch (docs/06-layouts.md).
                                          // Give each client a different layout and palette pairing.
     order: [],                           // REQUIRED for new sites: the middle sections in your order, e.g. ['work', 'services', 'location', 'bookingSteps'].
                                          // Can move: services, plan, work, bookingSteps, reviews, coverage, location (docs/06-layouts.md).
@@ -100,6 +100,7 @@ module.exports = {
     priceTable: false,        // prices by size or option
     addons: false,
     plan: false,              // regular visits or subscription
+    photoStrip: false,        // a row of 3 to 6 square photos, straight under the top section unless brand.order moves it
     work: false,              // photos, before/after, video
     bookingSteps: true,
     reviews: false,           // only with real reviews and consent
@@ -188,6 +189,12 @@ module.exports = {
     cta: 'Ask about regular visits',
     ctaAbout: 'regular visits',
     photo: '',
+  },
+
+  // ---------- Photo strip: a row of square photos ----------
+  photoStrip: {
+    label: 'Photos of our work',         // read out by screen readers
+    photos: [],                          // 3 to 6 short names from "photos", e.g. ['cut1', 'cut2', 'cut3', 'cut4', 'cut5']
   },
 
   // ---------- Our work ----------
