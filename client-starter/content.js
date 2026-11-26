@@ -71,6 +71,8 @@ module.exports = {
                                          // It colours the whole site. mode and accent below are only used when palette is ''.
     layout: '',                          // REQUIRED for new sites: split, overlay, centered, mirror or editorial (docs/06-layouts.md).
                                          // Give each client a different layout and palette pairing.
+    order: [],                           // REQUIRED for new sites: the middle sections in your order, e.g. ['work', 'services', 'location', 'bookingSteps'].
+                                         // Can move: services, plan, work, bookingSteps, reviews, coverage, location (docs/06-layouts.md).
     mode: 'dark',                        // 'dark' or 'light'
     accent: '#4F9DF7',                  // main colour for links and highlights. The build checks it is readable.
     font: 'modern',                      // 'modern', 'classic' or 'friendly'

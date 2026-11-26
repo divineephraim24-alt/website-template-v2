@@ -7,6 +7,7 @@ const fs = require('fs'), path = require('path'), vm = require('vm'), crypto = r
 const ENGINE = path.resolve(__dirname, '..', 'engine');
 const lib = require(path.join(ENGINE, 'lib'));
 const theme = require(path.join(ENGINE, 'themes', 'dark-premium'));
+const order = require(path.join(ENGINE, 'order'));
 const { createContext, METHODS } = require(path.join(ENGINE, 'context'));
 const layout = require(path.join(ENGINE, 'pages', 'layout'));
 const homePage = require(path.join(ENGINE, 'pages', 'home'));
@@ -160,6 +161,19 @@ function validate(c, clientDir, live) {
   } else if (!['dark', 'light'].includes(br.mode)) e.push(`brand.mode must be 'dark' or 'light' (it says "${br.mode}").`);
   const layouts = ['split', 'overlay', 'centered', 'mirror', 'editorial'];
   if (br.layout && !layouts.includes(br.layout)) e.push(`brand.layout must be one of: ${layouts.join(', ')} (see docs/06-layouts.md). It says "${br.layout}".`);
+  order.orderProblems(br.order).forEach(m => e.push(m));
+  // Every site must look different: compare palette, layout and section order with the
+  // other client folders next to this one.
+  const mine = order.designSignature(c), parent = path.dirname(clientDir);
+  for (const name of fs.readdirSync(parent)) {
+    const other = path.join(parent, name), file = path.join(other, 'client', 'content.js');
+    if (other === clientDir || !fs.existsSync(file)) continue;
+    let theirs;
+    try { delete require.cache[require.resolve(file)]; theirs = order.designSignature(require(file)); } catch { continue; }
+    if (theirs.palette !== mine.palette || theirs.layout !== mine.layout) continue;
+    if (theirs.order === mine.order) (live ? e : w).push(`This site would look the same as "${name}": same palette (${mine.palette}), layout (${mine.layout}) and section order. Change brand.palette, brand.layout or brand.order (see docs/06-layouts.md).`);
+    else w.push(`Same palette and layout as "${name}" (${mine.palette}, ${mine.layout}), with a different section order. If it's in the same area, change the palette or layout too.`);
+  }
   if (!theme.FONTS[br.font]) e.push(`brand.font must be one of: ${Object.keys(theme.FONTS).join(', ')}.`);
   if (!theme.CORNERS[br.corners]) e.push(`brand.corners must be one of: ${Object.keys(theme.CORNERS).join(', ')}.`);
   if (br.palette) { /* the palette sets the accent and checks readability itself */ }

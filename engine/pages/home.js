@@ -1,15 +1,16 @@
 const layout = require('./layout');
 const { SCHEMA_DAYS, parseDays, ukIntl } = require('../lib');
 const { mapUrl } = require('../sections/location');
-// Sections in page order: [switch name, renderer]
-const ORDER = [
+const { pageOrder } = require('../order');
+// Each section's renderer. The order on the page comes from engine/order.js (brand.order).
+const RENDER = Object.fromEntries([
   ['hero', require('../sections/hero')], ['reassurance', require('../sections/reassurance')],
   ['services', require('../sections/services')], ['priceTable', require('../sections/price-table')],
   ['addons', require('../sections/addons')], ['plan', require('../sections/plan')],
   ['work', require('../sections/work')], ['bookingSteps', require('../sections/booking-steps')],
   ['reviews', require('../sections/reviews')], ['coverage', require('../sections/coverage')],
   ['location', require('../sections/location')], ['closing', require('../sections/closing')],
-];
+]);
 
 function allPrices(c) {
   const out = [], add = (v) => { if (typeof v === 'number') out.push(v); };
@@ -40,7 +41,7 @@ function structuredData(x) {
   return `\n  <script type="application/ld+json">\n${JSON.stringify(d, null, 2).replace(/</g, '\\u003c')}\n  </script>`;
 }
 module.exports = (x) => {
-  const main = ORDER.filter(([k]) => x.sectionOn(k)).map(([, r]) => r(x)).join('');
+  const main = pageOrder(x.c).filter(k => x.sectionOn(k)).map(k => RENDER[k](x)).join('');
   let preload = '';
   const hero = x.sectionOn('hero') && x.c.hero.photo && x.images[x.c.hero.photo];
   if (hero) {
