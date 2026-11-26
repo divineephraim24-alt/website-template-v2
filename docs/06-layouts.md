@@ -73,6 +73,6 @@ The owner's layout boards, and what each one teaches, are in `docs/layout-toolki
 ## In use
 | Client | Layout | Palette | Order |
 |---|---|---|---|
-| SM Danny's | `overlay` | `velvet-forest` | services, work, location, bookingSteps |
+| SM Danny's | `arch` | `velvet-forest` | services, work, location, bookingSteps |
 | Deb n Hair | `centered` | `retro-sunset` | location, services, work, bookingSteps |
 | Yasin's Slick N Style Cutz | `editorial` | `graffiti-night` | work, services, bookingSteps, location |
