@@ -161,6 +161,7 @@ function validate(c, clientDir, live) {
   } else if (!['dark', 'light'].includes(br.mode)) e.push(`brand.mode must be 'dark' or 'light' (it says "${br.mode}").`);
   const layouts = ['split', 'overlay', 'centered', 'mirror', 'editorial'];
   if (br.layout && !layouts.includes(br.layout)) e.push(`brand.layout must be one of: ${layouts.join(', ')} (see docs/06-layouts.md). It says "${br.layout}".`);
+  if (br.moodFont !== undefined && ![1, 2, false].includes(br.moodFont)) e.push(`brand.moodFont must be 1, 2 or false (it says "${br.moodFont}"). See docs/colour-palettes/README.md.`);
   order.orderProblems(br.order).forEach(m => e.push(m));
   // Every site must look different: compare palette, layout and section order with the
   // other client folders next to this one.

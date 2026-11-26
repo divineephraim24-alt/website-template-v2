@@ -69,6 +69,7 @@ module.exports = {
   brand: {
     palette: '',                         // REQUIRED for new sites: a palette name from docs/colour-palettes/README.md, e.g. 'velvet-forest'.
                                          // It colours the whole site. mode and accent below are only used when palette is ''.
+    moodFont: 1,                         // heading font: 1 or 2 (the two choices for the palette's mood), or false for none
     layout: '',                          // REQUIRED for new sites: split, overlay, centered, mirror or editorial (docs/06-layouts.md).
                                          // Give each client a different layout and palette pairing.
     order: [],                           // REQUIRED for new sites: the middle sections in your order, e.g. ['work', 'services', 'location', 'bookingSteps'].

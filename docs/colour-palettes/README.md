@@ -15,22 +15,26 @@ pastel colours are safe. The palettes live in `engine/themes/palettes.js`.
 `boards/` holds the owner's reference boards the palettes come from (luxury, uptown modern,
 hip hop, 90s). They are for reference only: never put them on a client site.
 
-## Fonts: each mood has its own heading font
-A palette brings its mood's heading font with it automatically. Body text stays in the phone's
-built-in font, which is the fastest and very readable.
+## Fonts: two heading fonts per mood
+A palette brings its mood's heading font with it automatically. Each mood has two to choose
+from: set `brand.moodFont` to `1` (the default) or `2`. Body text stays in the phone's built-in
+font, which is the fastest and very readable.
 
-| Mood | Heading font | Feel |
+| Mood | Font 1 (default) | Font 2 |
 |---|---|---|
-| Luxury | Cormorant Garamond (SemiBold) | Elegant, high-contrast serif |
-| Uptown modern | Outfit (SemiBold) | Clean, geometric, contemporary |
-| Hip hop | Anton | Tall, bold, street-poster |
-| 90s | Righteous | Rounded, retro, playful |
+| Luxury | Cormorant Garamond: elegant, light, high-contrast serif | Playfair Display: bolder, classic magazine serif |
+| Uptown modern | Outfit: clean, geometric sans | DM Serif Display: modern fashion-magazine serif |
+| Hip hop | Anton: tall, condensed street poster | Bungee: blocky, all-capitals street signage |
+| 90s | Righteous: rounded retro | Shrikhand: chunky, playful retro script |
 
-- The font files are stored in the toolkit (`engine/assets/fonts/`, 13 to 23 KB each), never
+- The font files are stored in the toolkit (`engine/assets/fonts/`, 13 to 25 KB each), never
   loaded from Google or another server. Only the one a site uses goes on the site.
-- All four use the SIL Open Font License: free for commercial use, licences in `engine/assets/fonts/licences/`.
+- All eight use the SIL Open Font License: free for commercial use, licences in `engine/assets/fonts/licences/`.
+- The font counts towards a site being unique: two clients with the same palette, layout and
+  order but different fonts are different sites.
 - If the client has their own licensed font, set `brand.fontFile` and `brand.fontName`: it wins.
 - To use the plain built-in font instead, set `brand.moodFont: false`.
+- Bungee and Shrikhand are loud: they suit short headings. Check long business names on a phone.
 
 ## How to choose
 - Pick the **mood** that suits the client and their customers, then the palette inside it.

@@ -28,10 +28,12 @@ function pageOrder(c) {
   return [...FIRST, ...middle.flatMap(k => STAYS_WITH[k] || [k]), ...LAST];
 }
 
-// What makes a site look the way it does: palette, layout and the order of its switched-on sections.
+// What makes a site look the way it does: palette, heading font, layout and the order of its
+// switched-on sections.
 function designSignature(c) {
   const b = c.brand || {}, on = k => !!(c.sections && c.sections[k]);
-  return { palette: b.palette || `plain ${b.mode || 'dark'}`, layout: b.layout || 'split', order: pageOrder(c).filter(on).join(' > ') };
+  const font = b.fontFile ? `own font ${b.fontName || ''}` : b.moodFont === false ? 'built-in' : `mood font ${b.moodFont === 2 ? 2 : 1}`;
+  return { palette: `${b.palette || `plain ${b.mode || 'dark'}`}, ${font}`, layout: b.layout || 'split', order: pageOrder(c).filter(on).join(' > ') };
 }
 
 module.exports = { MOVABLE, orderProblems, pageOrder, designSignature };

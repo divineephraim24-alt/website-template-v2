@@ -50,19 +50,34 @@ const LIBRARY = {
     bg: '#FBF3E4', alt: '#F5E3BC', card: '#FFFFFF', ink: '#2B1020', accent: '#AD3A6D', strip: '#3A7D9D', foot: '#7F2F75' },
 };
 
-// ---------- the heading font for each mood ----------
-// Stored in engine/assets/fonts (SIL Open Font License, see fonts/licences), never loaded from
-// another server. Body text stays in the phone's built-in font: the fastest and very readable.
-// A client's own licensed font (brand.fontFile) wins; brand.moodFont: false switches this off.
+// ---------- the heading fonts for each mood ----------
+// Two choices per mood, stored in engine/assets/fonts (SIL Open Font License, see
+// fonts/licences), never loaded from another server. Body text stays in the phone's built-in
+// font: the fastest and very readable.
+//   brand.moodFont: 1 (or left out) = the first choice, 2 = the second, false = no mood font.
+// A client's own licensed font (brand.fontFile) always wins.
 const MOOD_FONTS = {
-  'luxury':        { name: 'Cormorant Garamond', file: 'cormorant-garamond-600.woff2', weight: 600, spacing: '0', fallback: 'Georgia, "Times New Roman", serif' },
-  'uptown modern': { name: 'Outfit', file: 'outfit-600.woff2', weight: 600, spacing: '-0.01em', fallback: '-apple-system, "Segoe UI", Roboto, Arial, sans-serif' },
-  'hip hop':       { name: 'Anton', file: 'anton-400.woff2', weight: 400, spacing: '0.01em', fallback: 'Impact, "Arial Narrow", "Arial Black", sans-serif' },
-  '90s':           { name: 'Righteous', file: 'righteous-400.woff2', weight: 400, spacing: '0', fallback: '"Trebuchet MS", "Arial Rounded MT Bold", sans-serif' },
+  'luxury': [
+    { name: 'Cormorant Garamond', file: 'cormorant-garamond-600.woff2', weight: 600, spacing: '0', fallback: 'Georgia, "Times New Roman", serif' },
+    { name: 'Playfair Display', file: 'playfair-display-700.woff2', weight: 700, spacing: '-0.005em', fallback: 'Georgia, "Times New Roman", serif' },
+  ],
+  'uptown modern': [
+    { name: 'Outfit', file: 'outfit-600.woff2', weight: 600, spacing: '-0.01em', fallback: '-apple-system, "Segoe UI", Roboto, Arial, sans-serif' },
+    { name: 'DM Serif Display', file: 'dm-serif-display-400.woff2', weight: 400, spacing: '0', fallback: 'Georgia, "Times New Roman", serif' },
+  ],
+  'hip hop': [
+    { name: 'Anton', file: 'anton-400.woff2', weight: 400, spacing: '0.01em', fallback: 'Impact, "Arial Narrow", "Arial Black", sans-serif' },
+    { name: 'Bungee', file: 'bungee-400.woff2', weight: 400, spacing: '0', fallback: 'Impact, "Arial Black", sans-serif' },
+  ],
+  '90s': [
+    { name: 'Righteous', file: 'righteous-400.woff2', weight: 400, spacing: '0', fallback: '"Trebuchet MS", "Arial Rounded MT Bold", sans-serif' },
+    { name: 'Shrikhand', file: 'shrikhand-400.woff2', weight: 400, spacing: '0', fallback: '"Trebuchet MS", "Arial Black", sans-serif' },
+  ],
 };
 const moodFontFor = (brand) => {
   if (!brand || brand.fontFile || brand.moodFont === false || !LIBRARY[brand.palette]) return null;
-  return MOOD_FONTS[LIBRARY[brand.palette].mood] || null;
+  const choices = MOOD_FONTS[LIBRARY[brand.palette].mood] || [];
+  return choices[brand.moodFont === 2 ? 1 : 0] || null;
 };
 
 // ---------- colour maths (WCAG contrast) ----------
