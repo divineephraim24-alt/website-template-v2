@@ -46,6 +46,9 @@ The build compares each site with the other client folders next to it. If two si
 have the **same palette, layout and section order**, a preview build warns and a `--live`
 build refuses. If they only share a palette and layout, the build warns.
 
+## Inspiration
+The owner's layout boards, and what each one teaches, are in `docs/layout-toolkit/README.md`.
+
 ## Choosing
 - **No two clients in the same area should share the same layout and palette pair.** Check the other client folders first.
 - `overlay` needs a good, uncluttered photo: the heading sits on top of it.
