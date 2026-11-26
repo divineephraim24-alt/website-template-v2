@@ -1,6 +1,6 @@
 # Intake questions (master list)
 
-Use these on a call, or send the Google Form version (`01b-google-form-questions.md`). Skip anything that doesn't apply. "Not sure" is a fine answer: Claude turns gaps into `QUESTIONS.md`. The note in brackets shows where each answer goes in `client/content.js`.
+Use these on a call, send the Google Form version (`01b-google-form-questions.md`), or send the Word version with answer boxes (`01c-website-information-form.docx`). If you change a question here, change it in the Google Form and the Word version too. Skip anything that doesn't apply. "Not sure" is a fine answer: Claude turns gaps into `QUESTIONS.md`. The note in brackets shows where each answer goes in `client/content.js`.
 
 ## 1. The business
 1. What is the business called, exactly as it should appear? (`business.name`)

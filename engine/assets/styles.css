@@ -323,3 +323,143 @@ main { background: var(--bg); }
   .page-hero--photo .page-hero-text { padding-top: 160px; }
   .privacy { padding: 28px 32px; }
 }
+
+/* =====================================================================
+   Layouts: brand.layout in content.js puts layout-<name> on <body>.
+   split (the default, no rules below), overlay, centered, mirror, editorial.
+   Each one changes the top section, headings, service cards and gallery,
+   so two sites with the same content still look different.
+   ===================================================================== */
+
+/* ---------- overlay: full-width photo with the heading on top of it ---------- */
+.layout-overlay .hero:not(.hero--no-photo) .hero-grid { position: relative; display: flex; align-items: flex-end; min-height: clamp(560px, 86svh, 820px); }
+.layout-overlay .hero:not(.hero--no-photo) .hero-media { position: absolute; inset: 0; margin: 0; }
+.layout-overlay .hero:not(.hero--no-photo) .hero-media img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.layout-overlay .hero:not(.hero--no-photo) .hero-media::after { inset: 0; height: auto; background: linear-gradient(to top, rgba(0, 0, 0, .82) 0%, rgba(0, 0, 0, .45) 50%, rgba(0, 0, 0, .12) 100%); }
+.layout-overlay .hero:not(.hero--no-photo) .hero-text { margin: 0; padding: 48px 0; width: 100%; }
+.layout-overlay .hero:not(.hero--no-photo) .hero-text h1,
+.layout-overlay .hero:not(.hero--no-photo) .hero-lead { color: #FFFFFF; }
+.layout-overlay .hero:not(.hero--no-photo) .hero-note { color: rgba(255, 255, 255, .86); }
+.layout-overlay .hero:not(.hero--no-photo) .btn--ghost { color: #FFFFFF; border-color: rgba(255, 255, 255, .75); }
+.layout-overlay .card { border: 0; box-shadow: 0 1px 0 var(--line), 0 12px 32px rgba(0, 0, 0, .08); }
+
+/* ---------- centered: heading centred on top, wide framed photo below ---------- */
+.layout-centered .hero-grid { display: flex; flex-direction: column; }
+.layout-centered .hero-text { order: -1; margin: 0 auto; padding: 56px 0 32px; text-align: center; }
+.layout-centered .hero-text h1, .layout-centered .hero-lead { margin-left: auto; margin-right: auto; }
+.layout-centered .hero-actions { justify-content: center; }
+.layout-centered .hero-media { margin: 0 0 40px; border-radius: var(--r-lg); overflow: hidden; }
+.layout-centered .hero-media::after { display: none; }
+.layout-centered .hero-media img { height: clamp(300px, 52svh, 560px); }
+.layout-centered .section .container > h2, .layout-centered .section .container > .eyebrow { text-align: center; }
+.layout-centered .section .container > .section-lead { text-align: center; margin-left: auto; margin-right: auto; }
+.layout-centered .card { text-align: center; }
+.layout-centered .card .ticks { text-align: left; }
+.layout-centered .tile { border-radius: var(--r-lg); }
+
+/* ---------- mirror: text first, photo on the left on desktop, open cards ---------- */
+.layout-mirror .hero-grid { display: flex; flex-direction: column; }
+.layout-mirror .hero-text { order: -1; margin-top: 0; padding: 40px 0 32px; }
+.layout-mirror .hero-media::after { display: none; }
+.layout-mirror .hero-media img { height: clamp(300px, 56svh, 520px); }
+.layout-mirror .card { background: transparent; border: 0; border-top: 4px solid var(--accent); border-radius: 0; padding-left: 0; padding-right: 0; }
+.layout-mirror .section .container > h2::after { content: ""; display: block; width: 56px; height: 4px; margin-top: 14px; background: var(--accent); }
+
+/* ---------- editorial: very large heading, edge-to-edge photo, services as rows ---------- */
+.layout-editorial .hero-grid { display: flex; flex-direction: column; }
+.layout-editorial .hero-text { order: -1; margin-top: 0; padding: 56px 0 36px; }
+.layout-editorial .hero-text h1 { font-size: clamp(2.6rem, 10vw, 5.6rem); line-height: 1.02; max-width: 13ch; }
+.layout-editorial .hero-media::after { display: none; }
+.layout-editorial .hero-media img { height: clamp(320px, 62svh, 640px); }
+.layout-editorial .section .container > h2 { border-top: 3px solid var(--ink); padding-top: 18px; }
+.layout-editorial .cards { grid-template-columns: 1fr; gap: 0; }
+.layout-editorial .card { background: transparent; border: 0; border-top: 1px solid var(--line); border-radius: 0; padding: 28px 0; }
+.layout-editorial .tile { border-radius: 0; }
+
+@media (min-width: 900px) {
+  .layout-overlay .hero:not(.hero--no-photo) .container.hero-grid { display: flex; align-items: flex-end; max-width: none; padding: 0; min-height: clamp(560px, calc(100svh - 72px), 820px); }
+  .layout-overlay .hero:not(.hero--no-photo) .hero-text { padding: 72px max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter))); }
+  .layout-overlay .hero:not(.hero--no-photo) .hero-text h1 { max-width: 18ch; }
+  .layout-overlay .hero:not(.hero--no-photo) .hero-media::after { display: block; inset: 0; height: auto; background: linear-gradient(to right, rgba(0, 0, 0, .78) 0%, rgba(0, 0, 0, .5) 40%, rgba(0, 0, 0, 0) 72%), linear-gradient(to top, rgba(0, 0, 0, .55) 0%, rgba(0, 0, 0, 0) 55%); }
+
+  .layout-centered .hero .container.hero-grid { display: flex; flex-direction: column; max-width: var(--max); padding: 0 var(--gutter); min-height: 0; }
+  .layout-centered .hero-text { padding: 88px 0 44px; }
+  .layout-centered .hero-media { position: relative; height: clamp(380px, 58svh, 620px); margin-bottom: 64px; }
+
+  .layout-mirror .hero .container.hero-grid { display: grid; grid-template-columns: min(50%, 900px) 1fr; }
+  .layout-mirror .hero-media { order: 0; margin: 0; }
+  .layout-mirror .hero-media img { height: 100%; }
+  .layout-mirror .hero-text { order: 1; padding: 56px max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter))) 56px 64px; }
+  .layout-mirror .cards { gap: 40px; }
+
+  .layout-editorial .hero .container.hero-grid { display: flex; flex-direction: column; max-width: none; padding: 0; min-height: 0; }
+  .layout-editorial .hero-text { padding: 96px max(var(--gutter), calc((100vw - var(--max)) / 2 + var(--gutter))) 48px; }
+  .layout-editorial .hero-media { position: relative; height: clamp(420px, 66svh, 720px); margin: 0; }
+  .layout-editorial .cards--2, .layout-editorial .cards--3 { grid-template-columns: 1fr; gap: 0; }
+  .layout-editorial .card { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); column-gap: 64px; align-items: start; padding: 36px 0; }
+  .layout-editorial .card > * { grid-column: 2; }
+  .layout-editorial .card > .card-head { grid-column: 1; grid-row: 1 / span 4; border-bottom: 0; }
+  .layout-editorial .card-cta { width: auto; justify-self: start; }
+  .layout-editorial .gallery { gap: 4px; }
+}
+
+/* ---------- photo strip: a row of square photos (engine/sections/photo-strip.js) ---------- */
+.photo-strip { background: var(--bg); padding: 12px 0; }
+.strip-row { display: grid; grid-auto-flow: column; grid-auto-columns: 42vw; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory;
+  padding: 0 var(--gutter); scroll-padding: 0 var(--gutter); scrollbar-width: none; }
+.strip-row::-webkit-scrollbar { display: none; }
+.strip-row:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.strip-tile { margin: 0; scroll-snap-align: start; aspect-ratio: 1; overflow: hidden; border-radius: var(--r-md); background: var(--card); }
+.strip-tile img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---------- arch: photos in arch-shaped frames, calm centred headings ---------- */
+.layout-arch .hero-grid { display: flex; flex-direction: column; }
+.layout-arch .hero-media { margin: 0 0 44px; border-radius: 50% 50% var(--r-sm) var(--r-sm) / 34% 34% var(--r-sm) var(--r-sm); overflow: hidden; }
+.layout-arch .hero-media::after { display: none; }
+.layout-arch .hero-media img { height: clamp(340px, 58svh, 560px); }
+.layout-arch .hero-text { order: -1; margin-top: 0; padding: 40px 0 32px; }   /* heading first on phones */
+.layout-arch .hero-text h1 { font-size: clamp(2.4rem, 9vw, 4.6rem); line-height: 1.05; }
+.layout-arch .section .container > h2, .layout-arch .section .container > .eyebrow { text-align: center; }
+.layout-arch .section .container > .section-lead { text-align: center; margin-left: auto; margin-right: auto; }
+.layout-arch .card { border-radius: 140px 140px var(--r-lg) var(--r-lg); padding-top: 44px; text-align: center; }
+.layout-arch .card .ticks { text-align: left; }
+.layout-arch .tile, .layout-arch .strip-tile, .layout-arch .split-media { border-radius: 50% 50% var(--r-sm) var(--r-sm) / 30% 30% var(--r-sm) var(--r-sm); }
+
+@media (min-width: 900px) {
+  .strip-row { grid-auto-flow: row; grid-template-columns: repeat(var(--strip-n, 5), minmax(0, 1fr)); overflow: visible; gap: 12px; }
+  .photo-strip { padding: 16px 0; }
+
+  .layout-arch .hero .container.hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 440px); gap: 72px; align-items: center;
+    max-width: var(--max); padding: 64px var(--gutter); min-height: 0; }
+  .layout-arch .hero-media { order: 2; margin: 0; position: relative; height: clamp(500px, 72svh, 660px); }
+  .layout-arch .hero-text { order: 1; }
+  .layout-arch .hero-media img { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .layout-arch .hero-text { padding: 0; }
+}
+
+/* ---------- review panel: one real review in a coloured gallery tile (engine/sections/work.js) ---------- */
+.tile--review { background: var(--btn-bg); color: var(--btn-ink); display: flex; flex-direction: column; justify-content: center; padding: 16px 18px; overflow-y: auto; }
+.tile--review blockquote { margin: 0; }
+.tile--review p { margin: 0; font-family: var(--font-head); font-size: .98rem; line-height: 1.36; max-width: none; }
+.tile--review figcaption { margin-top: 14px; font-size: .88rem; font-weight: 600; opacity: .9; }
+.layout-arch .tile--review { padding-top: 40px; text-align: center; }
+
+/* ---------- strip style "cards": the reassurance strip as cards over the bottom of the top photo ---------- */
+.strip-cards .reassure { position: relative; z-index: 2; margin-top: -44px; border: 0; color: var(--ink);
+  background: linear-gradient(to bottom, transparent 0 44px, var(--bg) 44px); }
+.strip-cards .reassure ul { padding: 0 0 28px; gap: 10px; }
+.strip-cards .reassure li { background: var(--strip-bg); color: var(--strip-ink); padding: 16px 14px; border-radius: var(--r-lg);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, .18); }
+.strip-cards.layout-split .hero-text, .strip-cards.layout-overlay .hero-text { padding-bottom: 92px; }
+.strip-cards.layout-centered .hero-media { margin-bottom: 0; }
+.strip-cards.layout-arch .hero-media { margin-bottom: 0; }
+
+@media (min-width: 900px) {
+  .tile--review { padding: 32px; }
+  .tile--review p { font-size: 1.2rem; }
+  .strip-cards .reassure { margin-top: -64px; background: linear-gradient(to bottom, transparent 0 64px, var(--bg) 64px); }
+  .strip-cards .reassure ul { grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 16px; padding-bottom: 40px; }
+  .strip-cards .reassure li { padding: 22px 20px; }
+  .strip-cards.layout-split .hero-text, .strip-cards.layout-overlay .hero-text, .strip-cards.layout-mirror .hero-text { padding-bottom: 120px; }
+  .strip-cards.layout-arch .hero .container.hero-grid { padding-bottom: 104px; }
+}

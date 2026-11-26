@@ -1,0 +1,2 @@
+Source: https://github.com/Leonxlnx/taste-skill (tasteskill 2.5.1, MIT licence, see LICENSE).
+Copied unchanged into this toolkit on 25 November 2026. The toolkit rules in CLAUDE.md take priority over this skill.

@@ -29,9 +29,21 @@ module.exports = (x) => {
           ${video.label ? `<figcaption class="film-label">${esc(video.label)}</figcaption>` : ''}
         </figure>` : '';
   const feature = (vid || ba) ? `<div class="work-feature${vid ? ' work-feature--video' : ''}${vid && !ba ? ' work-feature--solo' : ''}">${vid}${ba}</div>` : '';
-  const phone = fit(gallery, 2), desk = fit(gallery, 3);
-  const grid = gallery.length ? `<div class="gallery">${gallery.map((t, i) => `
-        <figure class="tile${phone[i] === 2 ? ' p2' : ''}${desk[i] > 1 ? ' d' + desk[i] : ''}">${x.photo(t.photo, { sizes: `(min-width: 900px) ${desk[i] * 360}px, ${phone[i] * 50}vw` })}</figure>`).join('')}
+  // Review panel: one real review (with consent, word for word) in a coloured tile inside the gallery.
+  const rp = w.reviewPanel || {}, rv = rp.on && gallery.length && x.c.reviews && x.c.reviews.consentConfirmed === true
+    ? (x.c.reviews.items || [])[(rp.review || 1) - 1] : null;
+  const tiles = [...gallery];
+  if (rv) tiles.splice(Math.min(Math.max(rp.after || 1, 0), tiles.length), 0, { review: rv });
+  // On phones the review tile takes the full width, so a whole review fits without shortening it.
+  const phone = fit(tiles.map(t => (t.review ? { wide: true } : t)), 2), desk = fit(tiles, 3);
+  const tile = (t, i) => {
+    const cls = `tile${phone[i] === 2 ? ' p2' : ''}${desk[i] > 1 ? ' d' + desk[i] : ''}`;
+    if (t.review) return `
+        <figure class="${cls} tile--review"><blockquote><p>“${esc(t.review.text)}”</p></blockquote><figcaption>${esc(t.review.name)}${t.review.town ? ', ' + esc(t.review.town) : ''}</figcaption></figure>`;
+    return `
+        <figure class="${cls}">${x.photo(t.photo, { sizes: `(min-width: 900px) ${desk[i] * 360}px, ${phone[i] * 50}vw` })}</figure>`;
+  };
+  const grid = tiles.length ? `<div class="gallery">${tiles.map(tile).join('')}
       </div>` : '';
   const ig = x.c.social && x.c.social.instagram;
   return x.section('work', `<div class="container">

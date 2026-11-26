@@ -7,6 +7,7 @@ const fs = require('fs'), path = require('path'), vm = require('vm'), crypto = r
 const ENGINE = path.resolve(__dirname, '..', 'engine');
 const lib = require(path.join(ENGINE, 'lib'));
 const theme = require(path.join(ENGINE, 'themes', 'dark-premium'));
+const order = require(path.join(ENGINE, 'order'));
 const { createContext, METHODS } = require(path.join(ENGINE, 'context'));
 const layout = require(path.join(ENGINE, 'pages', 'layout'));
 const homePage = require(path.join(ENGINE, 'pages', 'home'));
@@ -16,7 +17,7 @@ const notFoundPage = require(path.join(ENGINE, 'pages', 'notfound'));
 const policy = require(path.join(ENGINE, 'pages', 'policy'));
 const { prepareImages, findFfmpeg, runFfmpeg, pngSize } = require('./prepare_images');
 
-const SECTION_KEYS = ['hero', 'reassurance', 'services', 'priceTable', 'addons', 'plan', 'work', 'bookingSteps', 'reviews', 'coverage', 'location', 'closing', 'faq'];
+const SECTION_KEYS = ['hero', 'reassurance', 'photoStrip', 'services', 'priceTable', 'addons', 'plan', 'work', 'bookingSteps', 'reviews', 'coverage', 'location', 'closing', 'faq'];
 const SECTION_ANCHORS = { services: 'services', prices: 'priceTable', addons: 'addons', plan: 'plan', work: 'work', booking: 'bookingSteps', reviews: 'reviews', areas: 'coverage', 'find-us': 'location' };
 
 class Stop extends Error {}
@@ -72,6 +73,7 @@ function usedPhotos(c) {
   const s = c.sections, keys = new Set(), add = (k) => { if (k) keys.add(k); };
   [['hero', 'hero'], ['plan', 'plan'], ['bookingSteps', 'bookingSteps'], ['coverage', 'coverage'], ['location', 'location'], ['closing', 'closing'], ['faq', 'faq']]
     .forEach(([sw, k]) => { if (s[sw] && c[k]) add(c[k].photo); });
+  if (s.photoStrip && c.photoStrip) (c.photoStrip.photos || []).forEach(add);
   if (s.work) {
     const w = c.work;
     if (w.video && w.video.file) add(w.video.poster);
@@ -155,10 +157,30 @@ function validate(c, clientDir, live) {
 
   // Brand
   const br = c.brand;
-  if (!['dark', 'light'].includes(br.mode)) e.push(`brand.mode must be 'dark' or 'light' (it says "${br.mode}").`);
+  if (br.palette) {
+    if (!theme.LIBRARY[br.palette]) e.push(`brand.palette "${br.palette}" isn't a palette. Choose one of: ${Object.keys(theme.LIBRARY).join(', ')} (see docs/colour-palettes/README.md).`);
+  } else if (!['dark', 'light'].includes(br.mode)) e.push(`brand.mode must be 'dark' or 'light' (it says "${br.mode}").`);
+  const layouts = ['split', 'overlay', 'centered', 'mirror', 'editorial', 'arch'];
+  if (br.stripStyle && !['band', 'cards'].includes(br.stripStyle)) e.push(`brand.stripStyle must be 'band' or 'cards' (it says "${br.stripStyle}"). See docs/06-layouts.md.`);
+  if (br.layout && !layouts.includes(br.layout)) e.push(`brand.layout must be one of: ${layouts.join(', ')} (see docs/06-layouts.md). It says "${br.layout}".`);
+  if (br.moodFont !== undefined && ![1, 2, false].includes(br.moodFont)) e.push(`brand.moodFont must be 1, 2 or false (it says "${br.moodFont}"). See docs/colour-palettes/README.md.`);
+  order.orderProblems(br.order).forEach(m => e.push(m));
+  // Every site must look different: compare palette, layout and section order with the
+  // other client folders next to this one.
+  const mine = order.designSignature(c), parent = path.dirname(clientDir);
+  for (const name of fs.readdirSync(parent)) {
+    const other = path.join(parent, name), file = path.join(other, 'client', 'content.js');
+    if (other === clientDir || !fs.existsSync(file)) continue;
+    let theirs;
+    try { delete require.cache[require.resolve(file)]; theirs = order.designSignature(require(file)); } catch { continue; }
+    if (theirs.palette !== mine.palette || theirs.layout !== mine.layout) continue;
+    if (theirs.order === mine.order) (live ? e : w).push(`This site would look the same as "${name}": same palette (${mine.palette}), layout (${mine.layout}) and section order. Change brand.palette, brand.layout or brand.order (see docs/06-layouts.md).`);
+    else w.push(`Same palette and layout as "${name}" (${mine.palette}, ${mine.layout}), with a different section order. If it's in the same area, change the palette or layout too.`);
+  }
   if (!theme.FONTS[br.font]) e.push(`brand.font must be one of: ${Object.keys(theme.FONTS).join(', ')}.`);
   if (!theme.CORNERS[br.corners]) e.push(`brand.corners must be one of: ${Object.keys(theme.CORNERS).join(', ')}.`);
-  if (!/^#[0-9a-fA-F]{6}$/.test(String(br.accent || ''))) e.push(`brand.accent "${br.accent}" isn't a colour code. Use six digits like #2F6FDE.`);
+  if (br.palette) { /* the palette sets the accent and checks readability itself */ }
+  else if (!/^#[0-9a-fA-F]{6}$/.test(String(br.accent || ''))) e.push(`brand.accent "${br.accent}" isn't a colour code. Use six digits like #2F6FDE.`);
   else if (theme.PALETTES[br.mode]) {
     const p = theme.accentProblem(br.accent, br.mode);
     if (p) e.push(`The accent colour ${br.accent} is too hard to read on a ${br.mode} background (contrast ${p.ratio.toFixed(1)}, needs 4.5). The nearest readable shade is ${p.suggestion}.`);
@@ -223,6 +245,17 @@ function validate(c, clientDir, live) {
     (c.addons.items || []).forEach(a => { if (a.price != null && a.price !== '') checkPrice(a.price, `Add-on "${a.name}"`); else if (blank(a.priceText)) e.push(`Add-on "${a.name}" needs a price or priceText.`); });
   }
   if (need('plan') && c.plan.table && (c.plan.table.rows || []).length) checkTable(c.plan.table, 'Plan table');
+  if (need('photoStrip')) {
+    const n = (c.photoStrip.photos || []).length;
+    if (n < 3 || n > 6) e.push(`The photo strip needs 3 to 6 photos (it has ${n}).`);
+  }
+  if (on.work && c.work && c.work.reviewPanel && c.work.reviewPanel.on) {
+    // Review panel: only a real review, word for word, with the customer's consent.
+    const n = c.work.reviewPanel.review || 1, r = c.reviews && (c.reviews.items || [])[n - 1];
+    if (!c.reviews || c.reviews.consentConfirmed !== true) e.push('The review panel is on but reviews.consentConfirmed is not true. Only show a review once the customer has agreed to their name and town being used.');
+    else if (!r || blank(r.text) || blank(r.name)) e.push(`The review panel uses review ${n}, but there is no review ${n} with text and a name in "reviews".`);
+    else if (r.text.length > 220) e.push(`Review ${n} is too long for the review panel (${r.text.length} characters, 220 at most). Reviews can't be shortened, so pick a shorter one with work.reviewPanel.review.`);
+  }
   if (need('work')) {
     const w2 = c.work, v = w2.video && w2.video.file ? w2.video : null;
     if (!v && !(w2.beforeAfter || []).length && !(w2.gallery || []).length) e.push('The "work" section is on but has no video or photos.');
@@ -326,7 +359,7 @@ function brandFiles(c, clientDir, images, outDir, ffmpeg) {
   }
 
   // Link preview image, 1200 x 630
-  const p = theme.PALETTES[c.brand.mode], work = fs.mkdtempSync(path.join(os.tmpdir(), 'site-og-'));
+  const chosen = theme.paletteFor(c.brand), p = chosen.vars, work = fs.mkdtempSync(path.join(os.tmpdir(), 'site-og-'));
   try {
     const name = c.business.name, tag = c.business.tagline || '';
     fs.writeFileSync(path.join(work, 'name.txt'), name);
@@ -347,7 +380,7 @@ function brandFiles(c, clientDir, images, outDir, ffmpeg) {
       cur = 'b'; idx++;
     }
     const bold = "fontfile='C\\:/Windows/Fonts/segoeuib.ttf'", reg = "fontfile='C\\:/Windows/Fonts/segoeui.ttf'";
-    graph += `[${cur}]drawbox=x=60:y=268:w=90:h=5:color=${c.brand.accent}:t=fill,drawtext=${bold}:textfile=name.txt:fontcolor=${p.ink}:fontsize=${fit(name, 60)}:x=60:y=295`;
+    graph += `[${cur}]drawbox=x=60:y=268:w=90:h=5:color=${chosen.button}:t=fill,drawtext=${bold}:textfile=name.txt:fontcolor=${p.ink}:fontsize=${fit(name, 60)}:x=60:y=295`;
     if (tag) graph += `,drawtext=${reg}:textfile=tag.txt:fontcolor=${p.muted}:fontsize=${fit(tag, 30)}:x=60:y=385`;
     graph += '[out]';
     runFfmpeg(ffmpeg, [...args, '-filter_complex', graph, '-map', '[out]', '-map_metadata', '-1', '-frames:v', '1', '-update', '1', '-q:v', '3', path.join(imgDir, 'og-image.jpg')], work);
@@ -419,15 +452,17 @@ function build(clientDir, live) {
     if (video.poster && images[video.poster]) videoPoster = [...images[video.poster].files].sort((a, b) => a.width - b.width)[0].file;
     for (const f of ['_worker.js', '_routes.json']) fs.copyFileSync(path.join(ENGINE, 'assets', f), path.join(temp, f));
   }
-  if (c.brand.fontFile) {
+  const moodFont = theme.moodFontFor(c.brand);   // the palette mood's heading font (engine/assets/fonts)
+  if (c.brand.fontFile || moodFont) {
     fs.mkdirSync(path.join(temp, 'fonts'));
-    fs.copyFileSync(path.join(clientDir, 'client', 'media', c.brand.fontFile), path.join(temp, 'fonts', path.basename(c.brand.fontFile)));
+    if (c.brand.fontFile) fs.copyFileSync(path.join(clientDir, 'client', 'media', c.brand.fontFile), path.join(temp, 'fonts', path.basename(c.brand.fontFile)));
+    else fs.copyFileSync(path.join(ENGINE, 'assets', 'fonts', moodFont.file), path.join(temp, 'fonts', moodFont.file));
   }
 
   fs.writeFileSync(path.join(temp, 'styles.css'), theme.themeCss(c.brand, c.contact.main === 'whatsapp') + '\n' + fs.readFileSync(path.join(ENGINE, 'assets', 'styles.css'), 'utf8'));
   fs.copyFileSync(path.join(ENGINE, 'assets', 'script.js'), path.join(temp, 'script.js'));
 
-  const base = { logo, themeColor: theme.PALETTES[c.brand.mode]['head-bg'], videoName, videoPoster };
+  const base = { logo, themeColor: theme.paletteFor(c.brand).vars['head-bg'], videoName, videoPoster };
   const ctx = (file2, extra = {}) => createContext(c, images, { ...base, file: file2, ...extra });
   const write = (name, html) => fs.writeFileSync(path.join(temp, name), html);
   const urls = ['/'];

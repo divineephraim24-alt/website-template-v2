@@ -1,13 +1,18 @@
 const { esc, icon } = require('../lib');
+const { pageOrder } = require('../order');
 function navItems(x) {
   const c = x.c, on = x.sectionOn, out = [];
-  if (on('services')) out.push([c.services.navLabel || 'Services', x.homeLink('#services')]);
-  if (on('priceTable')) out.push([c.priceTable.navLabel || 'Prices', x.homeLink('#prices')]);
-  if (on('plan')) out.push([c.plan.navLabel || 'Regular visits', x.homeLink('#plan')]);
-  if (on('work')) out.push([c.work.navLabel || 'Our work', x.homeLink('#work')]);
-  if (on('reviews')) out.push([c.reviews.navLabel || 'Reviews', x.homeLink('#reviews')]);
-  if (on('location')) out.push([c.location.navLabel || 'Find us', x.homeLink('#find-us')]);
-  else if (on('coverage')) out.push([c.coverage.navLabel || 'Areas', x.homeLink('#areas')]);
+  // Home page links follow the page's own section order (engine/order.js).
+  const links = [];
+  if (on('services')) links.push(['services', [c.services.navLabel || 'Services', x.homeLink('#services')]]);
+  if (on('priceTable')) links.push(['priceTable', [c.priceTable.navLabel || 'Prices', x.homeLink('#prices')]]);
+  if (on('plan')) links.push(['plan', [c.plan.navLabel || 'Regular visits', x.homeLink('#plan')]]);
+  if (on('work')) links.push(['work', [c.work.navLabel || 'Our work', x.homeLink('#work')]]);
+  if (on('reviews')) links.push(['reviews', [c.reviews.navLabel || 'Reviews', x.homeLink('#reviews')]]);
+  if (on('location')) links.push(['location', [c.location.navLabel || 'Find us', x.homeLink('#find-us')]]);
+  else if (on('coverage')) links.push(['coverage', [c.coverage.navLabel || 'Areas', x.homeLink('#areas')]]);
+  const order = pageOrder(c);
+  links.sort((a, b) => order.indexOf(a[0]) - order.indexOf(b[0])).forEach(([, l]) => out.push(l));
   for (const p of (c.extraPages || []).filter(p => p.on)) out.push([p.navLabel || p.title, x.pageLink(p.slug + '.html'), p.slug + '.html']);
   if (on('faq')) out.push([c.faq.navLabel || 'FAQ', x.pageLink('faq.html'), 'faq.html']);
   return out;

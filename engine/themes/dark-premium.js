@@ -1,5 +1,7 @@
 // engine/themes/dark-premium.js: the look of the site, driven by content.js "brand".
-// Dark and light are separate, hand-picked palettes (light is not just dark inverted).
+// With brand.palette set, the whole site is coloured from that palette (see palettes.js).
+// Without it, the older plain dark or light palette is used with one accent colour.
+const palettes = require('./palettes');
 
 const PALETTES = {
   dark: {
@@ -54,21 +56,32 @@ function accentProblem(accent, mode) {
   return worst >= 4.5 ? null : { ratio: worst, suggestion: fixAccent(accent, mode) };
 }
 
-function themeCss(brand, usesWhatsAppButton) {
+// The colours a site uses: its named palette, or the older plain palette plus accent.
+function paletteFor(brand) {
+  const named = brand.palette && palettes.buildPalette(brand.palette);
+  if (named) return { mode: named.mode, vars: named.vars, accent: named.accentText, button: named.accentButton };
   const mode = brand.mode === 'light' ? 'light' : 'dark';
-  const p = PALETTES[mode], f = FONTS[brand.font] || FONTS.modern, r = CORNERS[brand.corners] || CORNERS.soft;
-  const accent = brand.accent;
-  // Main button: WhatsApp keeps an accessible green; other methods use the accent colour
-  const btnBg = usesWhatsAppButton ? '#0B7A55' : accent;
-  const btnInk = contrast('#FFFFFF', btnBg) >= 4.5 ? '#FFFFFF' : '#050507';
+  return { mode, vars: PALETTES[mode], accent: brand.accent, button: brand.accent };
+}
+
+function themeCss(brand, usesWhatsAppButton) {
+  const chosen = paletteFor(brand), mode = chosen.mode;
+  const p = chosen.vars, f = FONTS[brand.font] || FONTS.modern, r = CORNERS[brand.corners] || CORNERS.soft;
+  const accent = chosen.accent;
+  // Main button: WhatsApp keeps an accessible green; other methods use the palette's accent
+  const button = usesWhatsAppButton ? { bg: '#0B7A55', ink: '#FFFFFF' } : palettes.buttonColours(chosen.button);
+  const btnBg = button.bg, btnInk = button.ink;
   const footAccent = contrast(accent, p['foot-bg']) >= 4.5 ? accent : p['foot-muted'];
   const stripAccent = contrast(accent, p['strip-bg']) >= 3 ? accent : p['strip-ink'];
+  const mood = palettes.moodFontFor(brand);   // the palette mood's heading font, unless the client has their own
+  const headFont = brand.fontFile ? `"${brand.fontName}", ${f.body}` : mood ? `"${mood.name}", ${mood.fallback}` : (f.head === 'inherit' ? f.body : f.head);
   const vars = { ...p, accent, 'btn-bg': btnBg, 'btn-hover': darken(btnBg, .14), 'btn-ink': btnInk, 'foot-accent': footAccent, 'strip-accent': stripAccent,
-    font: f.body, 'font-head': brand.fontFile ? `"${brand.fontName}", ${f.body}` : (f.head === 'inherit' ? f.body : f.head), 'head-weight': f.weight, 'head-spacing': f.spacing,
+    font: f.body, 'font-head': headFont, 'head-weight': mood ? mood.weight : f.weight, 'head-spacing': mood ? mood.spacing : f.spacing,
     'r-sm': r.sm, 'r-md': r.md, 'r-lg': r.lg, 'r-btn': r.btn };
   const lines = Object.entries(vars).map(([k, v]) => `  --${k}: ${v};`).join('\n');
-  const face = brand.fontFile ? `@font-face { font-family: "${brand.fontName}"; src: url("fonts/${brand.fontFile.split('/').pop()}") format("woff2"); font-display: swap; font-weight: 400 800; }\n` : '';
+  const face = brand.fontFile ? `@font-face { font-family: "${brand.fontName}"; src: url("fonts/${brand.fontFile.split('/').pop()}") format("woff2"); font-display: swap; font-weight: 400 800; }\n`
+    : mood ? `@font-face { font-family: "${mood.name}"; src: url("fonts/${mood.file}") format("woff2"); font-display: swap; font-weight: ${mood.weight}; }\n` : '';
   return `/* Generated from content.js "brand". Change colours and style there, not here. */\n${face}:root {\n  color-scheme: ${mode};\n${lines}\n}\n`;
 }
 
-module.exports = { PALETTES, FONTS, CORNERS, contrast, accentProblem, themeCss };
+module.exports = { PALETTES, FONTS, CORNERS, contrast, accentProblem, themeCss, paletteFor, LIBRARY: palettes.LIBRARY, moodFontFor: palettes.moodFontFor };
