@@ -161,6 +161,7 @@ function validate(c, clientDir, live) {
     if (!theme.LIBRARY[br.palette]) e.push(`brand.palette "${br.palette}" isn't a palette. Choose one of: ${Object.keys(theme.LIBRARY).join(', ')} (see docs/colour-palettes/README.md).`);
   } else if (!['dark', 'light'].includes(br.mode)) e.push(`brand.mode must be 'dark' or 'light' (it says "${br.mode}").`);
   const layouts = ['split', 'overlay', 'centered', 'mirror', 'editorial', 'arch'];
+  if (br.stripStyle && !['band', 'cards'].includes(br.stripStyle)) e.push(`brand.stripStyle must be 'band' or 'cards' (it says "${br.stripStyle}"). See docs/06-layouts.md.`);
   if (br.layout && !layouts.includes(br.layout)) e.push(`brand.layout must be one of: ${layouts.join(', ')} (see docs/06-layouts.md). It says "${br.layout}".`);
   if (br.moodFont !== undefined && ![1, 2, false].includes(br.moodFont)) e.push(`brand.moodFont must be 1, 2 or false (it says "${br.moodFont}"). See docs/colour-palettes/README.md.`);
   order.orderProblems(br.order).forEach(m => e.push(m));
@@ -247,6 +248,13 @@ function validate(c, clientDir, live) {
   if (need('photoStrip')) {
     const n = (c.photoStrip.photos || []).length;
     if (n < 3 || n > 6) e.push(`The photo strip needs 3 to 6 photos (it has ${n}).`);
+  }
+  if (on.work && c.work && c.work.reviewPanel && c.work.reviewPanel.on) {
+    // Review panel: only a real review, word for word, with the customer's consent.
+    const n = c.work.reviewPanel.review || 1, r = c.reviews && (c.reviews.items || [])[n - 1];
+    if (!c.reviews || c.reviews.consentConfirmed !== true) e.push('The review panel is on but reviews.consentConfirmed is not true. Only show a review once the customer has agreed to their name and town being used.');
+    else if (!r || blank(r.text) || blank(r.name)) e.push(`The review panel uses review ${n}, but there is no review ${n} with text and a name in "reviews".`);
+    else if (r.text.length > 220) e.push(`Review ${n} is too long for the review panel (${r.text.length} characters, 220 at most). Reviews can't be shortened, so pick a shorter one with work.reviewPanel.review.`);
   }
   if (need('work')) {
     const w2 = c.work, v = w2.video && w2.video.file ? w2.video : null;

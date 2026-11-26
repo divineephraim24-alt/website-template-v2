@@ -436,3 +436,30 @@ main { background: var(--bg); }
   .layout-arch .hero-media img { position: absolute; inset: 0; width: 100%; height: 100%; }
   .layout-arch .hero-text { padding: 0; }
 }
+
+/* ---------- review panel: one real review in a coloured gallery tile (engine/sections/work.js) ---------- */
+.tile--review { background: var(--btn-bg); color: var(--btn-ink); display: flex; flex-direction: column; justify-content: center; padding: 16px 18px; overflow-y: auto; }
+.tile--review blockquote { margin: 0; }
+.tile--review p { margin: 0; font-family: var(--font-head); font-size: .98rem; line-height: 1.36; max-width: none; }
+.tile--review figcaption { margin-top: 14px; font-size: .88rem; font-weight: 600; opacity: .9; }
+.layout-arch .tile--review { padding-top: 40px; text-align: center; }
+
+/* ---------- strip style "cards": the reassurance strip as cards over the bottom of the top photo ---------- */
+.strip-cards .reassure { position: relative; z-index: 2; margin-top: -44px; border: 0; color: var(--ink);
+  background: linear-gradient(to bottom, transparent 0 44px, var(--bg) 44px); }
+.strip-cards .reassure ul { padding: 0 0 28px; gap: 10px; }
+.strip-cards .reassure li { background: var(--strip-bg); color: var(--strip-ink); padding: 16px 14px; border-radius: var(--r-lg);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, .18); }
+.strip-cards.layout-split .hero-text, .strip-cards.layout-overlay .hero-text { padding-bottom: 92px; }
+.strip-cards.layout-centered .hero-media { margin-bottom: 0; }
+.strip-cards.layout-arch .hero-media { margin-bottom: 0; }
+
+@media (min-width: 900px) {
+  .tile--review { padding: 32px; }
+  .tile--review p { font-size: 1.2rem; }
+  .strip-cards .reassure { margin-top: -64px; background: linear-gradient(to bottom, transparent 0 64px, var(--bg) 64px); }
+  .strip-cards .reassure ul { grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 16px; padding-bottom: 40px; }
+  .strip-cards .reassure li { padding: 22px 20px; }
+  .strip-cards.layout-split .hero-text, .strip-cards.layout-overlay .hero-text, .strip-cards.layout-mirror .hero-text { padding-bottom: 120px; }
+  .strip-cards.layout-arch .hero .container.hero-grid { padding-bottom: 104px; }
+}

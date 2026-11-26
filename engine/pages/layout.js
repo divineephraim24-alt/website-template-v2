@@ -38,7 +38,7 @@ module.exports = function layout(x, { title, description, path, main, preload = 
   <script>${INLINE_JS}</script>
   <script src="${x.asset('script.js')}" defer></script>${jsonLd}
 </head>
-<body class="layout-${esc(x.c.brand.layout || 'split')}">
+<body class="layout-${esc(x.c.brand.layout || 'split')} strip-${esc(x.c.brand.stripStyle || 'band')}">
 ${draft ? '<div class="draft-banner">DRAFT WORDING: not yet approved by the business</div>' : ''}${header(x)}
 <main id="main">${main}</main>
 ${footer(x)}${contactBar(x)}

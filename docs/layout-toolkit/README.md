@@ -18,17 +18,16 @@ or exact look. These images never go on a client site.
 | `04-editorial-arch-photos` | Huge light serif heading over a dark ground, photos in arch-shaped frames, an elegant, gallery-like feel | `arch` layout (built), ideally with a luxury palette and the Cormorant Garamond font |
 | `05-illustrated-full-screen-hero` | One full-screen image with a short, bold word and one button | `overlay` layout with one strong photo. Keep the heading short |
 | `06-florist-photo-strip-and-stats` | A strip of square photos straight after the top section, then a "meet the owner" panel, then a row of big numbers | The photo strip (built): `sections.photoStrip`. Numbers only if the client gives real, provable ones (our rules: never invent figures) |
-| `07-full-photo-hero-with-cards` | A full-photo top section with small cards overlapping its bottom edge | `overlay` layout. Overlapping cards are a future layout idea |
-| `08-asymmetric-photo-grid` | Big welcome on the left, photo on the right, then an uneven photo grid with one coloured review panel | `mirror` or `split` layout, with `work` before `services`. The coloured review panel suits a client with real reviews |
+| `07-full-photo-hero-with-cards` | A full-photo top section with small cards overlapping its bottom edge | `overlay` layout with `brand.stripStyle: 'cards'` (built) |
+| `08-asymmetric-photo-grid` | Big welcome on the left, photo on the right, then an uneven photo grid with one coloured review panel | `mirror` or `split` layout, with `work` before `services`. The review panel (built, `work.reviewPanel`) suits a client with real reviews |
 
 ## Ideas for future layouts
-These boards suggest layouts. Two are built; the others would be a proposed change to `engine/`
-first, as usual:
+All four ideas from these boards are now built:
 
 - **Arch:** built. Use `brand.layout: 'arch'` (board 04).
-- **Cards over the photo:** the reassurance strip as cards overlapping the bottom of the top photo (board 07).
+- **Cards over the photo:** built. Use `brand.stripStyle: 'cards'` (board 07).
 - **Photo strip:** built. Switch on `sections.photoStrip` and list 3 to 6 photos (board 06).
-- **Review panel:** one real review in a coloured block inside the gallery (board 08).
+- **Review panel:** built. Use `work.reviewPanel`, only with a real review and consent (board 08).
 
 ## Rules that still apply
 - Facts only from the client's `content.js`: no invented numbers, reviews or claims, even where a board shows them.

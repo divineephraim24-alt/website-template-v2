@@ -19,6 +19,19 @@ and wording stay the same. All five work on phones and pass the same checks.
 | `editorial` | Very large heading, edge-to-edge photo below | Ruled headings, services as rows, square gallery | Bold, confident brands (barbers, studios, shops) |
 | `arch` | Large heading beside a photo in an arch-shaped frame (heading first on phones) | Centred headings, arch-topped cards, arch-shaped gallery and strip photos | Elegant, soft (beauty, florists, bridal, wellness), lovely with a luxury palette |
 
+## Extra touches
+These work with every layout:
+
+- **Cards over the photo** (`brand.stripStyle: 'cards'`): the reassurance strip becomes floating
+  cards over the bottom of the top photo, in the palette's strip colour. Leave it out (or `'band'`)
+  for the full-width bar.
+- **Photo strip** (`sections.photoStrip`): a row of 3 to 6 square photos, straight under the
+  top section unless `brand.order` places it.
+- **Review panel** (`work.reviewPanel: { on: true, review: 1, after: 1 }`): one real review in a
+  coloured tile inside the gallery, after photo number `after`. Only with `reviews.consentConfirmed: true`,
+  word for word, 220 characters at most (the build checks; reviews are never shortened). Full
+  width on phones so the whole review fits.
+
 ## Section order
 The middle of the page can be in any order too. Set `brand.order` to the sections you want
 first, in order:

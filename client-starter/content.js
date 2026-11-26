@@ -70,7 +70,8 @@ module.exports = {
     palette: '',                         // REQUIRED for new sites: a palette name from docs/colour-palettes/README.md, e.g. 'velvet-forest'.
                                          // It colours the whole site. mode and accent below are only used when palette is ''.
     moodFont: 1,                         // heading font: 1 or 2 (the two choices for the palette's mood), or false for none
-    layout: '',                          // REQUIRED for new sites: split, overlay, centered, mirror, editorial or arch (docs/06-layouts.md).
+    layout: '',
+    stripStyle: 'band',                  // the reassurance strip: 'band' (a full-width bar) or 'cards' (floating cards over the bottom of the top photo)                          // REQUIRED for new sites: split, overlay, centered, mirror, editorial or arch (docs/06-layouts.md).
                                          // Give each client a different layout and palette pairing.
     order: [],                           // REQUIRED for new sites: the middle sections in your order, e.g. ['work', 'services', 'location', 'bookingSteps'].
                                          // Can move: services, plan, work, bookingSteps, reviews, coverage, location (docs/06-layouts.md).
@@ -206,6 +207,7 @@ module.exports = {
     video: { file: '', poster: '', label: '', description: '' },
     beforeAfter: [],                     // [{ before: 'photoName', after: 'photoName' }]
     gallery: [],                         // [{ photo: 'photoName', wide: true }]  wide = for landscape photos
+    reviewPanel: { on: false, review: 1, after: 1 },   // one real review (from "reviews", with consent) in a coloured tile after photo number "after"; 220 characters at most
   },
 
   // ---------- How booking works ----------
