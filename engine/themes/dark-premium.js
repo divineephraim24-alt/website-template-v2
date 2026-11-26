@@ -73,12 +73,15 @@ function themeCss(brand, usesWhatsAppButton) {
   const btnBg = button.bg, btnInk = button.ink;
   const footAccent = contrast(accent, p['foot-bg']) >= 4.5 ? accent : p['foot-muted'];
   const stripAccent = contrast(accent, p['strip-bg']) >= 3 ? accent : p['strip-ink'];
+  const mood = palettes.moodFontFor(brand);   // the palette mood's heading font, unless the client has their own
+  const headFont = brand.fontFile ? `"${brand.fontName}", ${f.body}` : mood ? `"${mood.name}", ${mood.fallback}` : (f.head === 'inherit' ? f.body : f.head);
   const vars = { ...p, accent, 'btn-bg': btnBg, 'btn-hover': darken(btnBg, .14), 'btn-ink': btnInk, 'foot-accent': footAccent, 'strip-accent': stripAccent,
-    font: f.body, 'font-head': brand.fontFile ? `"${brand.fontName}", ${f.body}` : (f.head === 'inherit' ? f.body : f.head), 'head-weight': f.weight, 'head-spacing': f.spacing,
+    font: f.body, 'font-head': headFont, 'head-weight': mood ? mood.weight : f.weight, 'head-spacing': mood ? mood.spacing : f.spacing,
     'r-sm': r.sm, 'r-md': r.md, 'r-lg': r.lg, 'r-btn': r.btn };
   const lines = Object.entries(vars).map(([k, v]) => `  --${k}: ${v};`).join('\n');
-  const face = brand.fontFile ? `@font-face { font-family: "${brand.fontName}"; src: url("fonts/${brand.fontFile.split('/').pop()}") format("woff2"); font-display: swap; font-weight: 400 800; }\n` : '';
+  const face = brand.fontFile ? `@font-face { font-family: "${brand.fontName}"; src: url("fonts/${brand.fontFile.split('/').pop()}") format("woff2"); font-display: swap; font-weight: 400 800; }\n`
+    : mood ? `@font-face { font-family: "${mood.name}"; src: url("fonts/${mood.file}") format("woff2"); font-display: swap; font-weight: ${mood.weight}; }\n` : '';
   return `/* Generated from content.js "brand". Change colours and style there, not here. */\n${face}:root {\n  color-scheme: ${mode};\n${lines}\n}\n`;
 }
 
-module.exports = { PALETTES, FONTS, CORNERS, contrast, accentProblem, themeCss, paletteFor, LIBRARY: palettes.LIBRARY };
+module.exports = { PALETTES, FONTS, CORNERS, contrast, accentProblem, themeCss, paletteFor, LIBRARY: palettes.LIBRARY, moodFontFor: palettes.moodFontFor };

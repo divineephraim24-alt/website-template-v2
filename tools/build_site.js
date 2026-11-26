@@ -438,9 +438,11 @@ function build(clientDir, live) {
     if (video.poster && images[video.poster]) videoPoster = [...images[video.poster].files].sort((a, b) => a.width - b.width)[0].file;
     for (const f of ['_worker.js', '_routes.json']) fs.copyFileSync(path.join(ENGINE, 'assets', f), path.join(temp, f));
   }
-  if (c.brand.fontFile) {
+  const moodFont = theme.moodFontFor(c.brand);   // the palette mood's heading font (engine/assets/fonts)
+  if (c.brand.fontFile || moodFont) {
     fs.mkdirSync(path.join(temp, 'fonts'));
-    fs.copyFileSync(path.join(clientDir, 'client', 'media', c.brand.fontFile), path.join(temp, 'fonts', path.basename(c.brand.fontFile)));
+    if (c.brand.fontFile) fs.copyFileSync(path.join(clientDir, 'client', 'media', c.brand.fontFile), path.join(temp, 'fonts', path.basename(c.brand.fontFile)));
+    else fs.copyFileSync(path.join(ENGINE, 'assets', 'fonts', moodFont.file), path.join(temp, 'fonts', moodFont.file));
   }
 
   fs.writeFileSync(path.join(temp, 'styles.css'), theme.themeCss(c.brand, c.contact.main === 'whatsapp') + '\n' + fs.readFileSync(path.join(ENGINE, 'assets', 'styles.css'), 'utf8'));

@@ -50,6 +50,21 @@ const LIBRARY = {
     bg: '#FBF3E4', alt: '#F5E3BC', card: '#FFFFFF', ink: '#2B1020', accent: '#AD3A6D', strip: '#3A7D9D', foot: '#7F2F75' },
 };
 
+// ---------- the heading font for each mood ----------
+// Stored in engine/assets/fonts (SIL Open Font License, see fonts/licences), never loaded from
+// another server. Body text stays in the phone's built-in font: the fastest and very readable.
+// A client's own licensed font (brand.fontFile) wins; brand.moodFont: false switches this off.
+const MOOD_FONTS = {
+  'luxury':        { name: 'Cormorant Garamond', file: 'cormorant-garamond-600.woff2', weight: 600, spacing: '0', fallback: 'Georgia, "Times New Roman", serif' },
+  'uptown modern': { name: 'Outfit', file: 'outfit-600.woff2', weight: 600, spacing: '-0.01em', fallback: '-apple-system, "Segoe UI", Roboto, Arial, sans-serif' },
+  'hip hop':       { name: 'Anton', file: 'anton-400.woff2', weight: 400, spacing: '0.01em', fallback: 'Impact, "Arial Narrow", "Arial Black", sans-serif' },
+  '90s':           { name: 'Righteous', file: 'righteous-400.woff2', weight: 400, spacing: '0', fallback: '"Trebuchet MS", "Arial Rounded MT Bold", sans-serif' },
+};
+const moodFontFor = (brand) => {
+  if (!brand || brand.fontFile || brand.moodFont === false || !LIBRARY[brand.palette]) return null;
+  return MOOD_FONTS[LIBRARY[brand.palette].mood] || null;
+};
+
 // ---------- colour maths (WCAG contrast) ----------
 const rgb = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
 const hex = c => '#' + c.map(v => Math.round(v).toString(16).padStart(2, '0')).join('').toUpperCase();
@@ -107,4 +122,4 @@ function buttonColours(fill) {
   return { bg: '#000000', ink: '#FFFFFF' };
 }
 
-module.exports = { LIBRARY, buildPalette, buttonColours, contrast };
+module.exports = { LIBRARY, MOOD_FONTS, moodFontFor, buildPalette, buttonColours, contrast };
