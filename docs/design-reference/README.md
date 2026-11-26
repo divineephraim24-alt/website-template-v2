@@ -36,10 +36,10 @@ Ours are at least 48 px. Never go below 44 px.
 blue. A light site with blue buttons looks like everyone else. Use a named palette from
 `docs/colour-palettes/`. None of them uses blue for its main button.
 
-**Fonts.** 78% of top sites use their own font, not the phone's built-in one. Our palettes now bring a heading font per mood (see `docs/colour-palettes/README.md`).
-Inter, Roboto, Open Sans and Poppins are the most common. Our sites use built-in fonts, which
-load fastest but look more ordinary. Adding a licensed .woff2 font (`brand.fontFile`) is the
-easiest way to make a site feel more designed. Pair it with the palette's mood.
+**Fonts.** 78% of top sites use their own font, not the phone's built-in one (Inter, Roboto,
+Open Sans and Poppins are the most common). Ours now do too: each palette mood brings its own
+heading font, stored with the toolkit (see `docs/colour-palettes/README.md`). Body text stays
+in the built-in font, which loads fastest. A client's own licensed font (`brand.fontFile`) wins.
 
 **First screen.** 89% show a clear heading on the first phone screen, and about half show a
 large photo or video. Our top section does both. A real photo of the client's work there
